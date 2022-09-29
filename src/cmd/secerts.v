@@ -13,6 +13,7 @@ fn secrets_command() cli.Command {
 		execute: secrets
 		commands: [
 			secrets_list_command(),
+			secrets_create_command(),
 		]
 	}
 }
