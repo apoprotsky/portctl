@@ -1,0 +1,45 @@
+module api
+
+import net.http
+import src.common
+
+struct ConfigSpec {
+pub:
+	name string [json: Name]
+	data string [json: Data]
+}
+
+pub struct Config {
+pub:
+	id   string     [json: ID]
+	spec ConfigSpec [json: Spec]
+}
+
+pub struct ConfigPostRequest {
+pub:
+	name string [json: Name]
+	data string [json: Data]
+}
+
+// get_configs returns array of Config
+pub fn (s &Service) get_configs(endpoint_id u32) ?[]Config {
+	return s.call<common.Empty, []Config>('endpoints/$endpoint_id/docker/configs', http.Method.get,
+		common.Empty{})
+}
+
+// get_config_by_name returns Config by name
+pub fn (s &Service) get_config_by_name(endpoint_id u32, name string) ?Config {
+	response := s.get_configs(endpoint_id)?
+	for config in response {
+		if config.spec.name == name {
+			return config
+		}
+	}
+	return error('config not found')
+}
+
+// create_config creates new Config
+pub fn (s &Service) create_config(endpoint_id u32, data ConfigPostRequest) ? {
+	s.call<ConfigPostRequest, common.Empty>('endpoints/$endpoint_id/docker/configs/create',
+		http.Method.post, data)?
+}
