@@ -16,7 +16,7 @@ jobs:
         with:
           check-latest: true
       - name: Checkout ${{ github.event.repository.name }}
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Check if code is formatted
         run: |
           v fmt -diff .
