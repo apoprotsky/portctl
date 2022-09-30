@@ -17,7 +17,7 @@ fn stacks_update(command cli.Command) ? {
 }
 
 fn stacks_update_work(command cli.Command, client api.Service, parser template.Service) ? {
-	endpoint := get_default_flag_value(env_portainer_endpoint)
+	endpoint := command.flags.get_string('endpoint')?
 	endpoint_id := client.get_endpoint_id_by_name(endpoint)?
 	name := command.flags.get_string('name')?
 	file := command.flags.get_string('file')?

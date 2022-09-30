@@ -16,7 +16,7 @@ fn configs_create(command cli.Command) ? {
 }
 
 fn configs_create_work(command cli.Command, client api.Service, parser template.Service) ? {
-	endpoint := get_default_flag_value(env_portainer_endpoint)
+	endpoint := command.flags.get_string('endpoint')?
 	endpoint_id := client.get_endpoint_id_by_name(endpoint)?
 	mut name := command.flags.get_string('name')?
 	file := command.flags.get_string('file')?

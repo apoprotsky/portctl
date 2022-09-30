@@ -15,7 +15,7 @@ fn stacks_apply(command cli.Command) ? {
 }
 
 fn stacks_apply_work(command cli.Command, client api.Service, parser template.Service) ? {
-	endpoint := get_default_flag_value(env_portainer_endpoint)
+	endpoint := command.flags.get_string('endpoint')?
 	endpoint_id := client.get_endpoint_id_by_name(endpoint)?
 	name := command.flags.get_string('name')?
 	client.get_stack_by_endpoint_id_and_name(endpoint_id, name) or {

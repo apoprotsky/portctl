@@ -8,7 +8,7 @@ fn configs_list(command cli.Command) ? {
 	services := get_services(command.flags)
 	client := services.get_service(common.ServicesNames.api)
 	if client is api.Service {
-		endpoint := get_default_flag_value(env_portainer_endpoint)
+		endpoint := command.flags.get_string('endpoint')?
 		endpoint_id := client.get_endpoint_id_by_name(endpoint)?
 		response := client.get_configs(endpoint_id)?
 		println('${'ID':-30}${'NAME'}')
