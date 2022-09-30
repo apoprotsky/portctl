@@ -6,16 +6,16 @@ import src.common
 import src.api
 import src.template
 
-fn secrets_create(command cli.Command) ? {
+fn secrets_apply(command cli.Command) ? {
 	services := get_services(command.flags)
 	client := services.get_service(common.ServicesNames.api)
 	parser := services.get_service(common.ServicesNames.template)
 	if client is api.Service && parser is template.Service {
-		return secrets_create_work(command, client, parser)
+		return secrets_apply_work(command, client, parser)
 	}
 }
 
-fn secrets_create_work(command cli.Command, client api.Service, parser template.Service) ? {
+fn secrets_apply_work(command cli.Command, client api.Service, parser template.Service) ? {
 	endpoint := get_default_flag_value(env_portainer_endpoint)
 	endpoint_id := client.get_endpoint_id_by_name(endpoint)?
 	mut name := command.flags.get_string('name')?
@@ -34,18 +34,19 @@ fn secrets_create_work(command cli.Command, client api.Service, parser template.
 		print(name)
 		return
 	}
-	return error('secret $name already exists')
+	eprintln('Secret $name found, nothing to do ... OK')
+	print(name)
 }
 
-fn secrets_create_command() cli.Command {
+fn secrets_apply_command() cli.Command {
 	mut flags := get_common_flags()
 	flags << get_endpoint_flag()
 	flags << get_vault_flags()
 	flags << get_secrets_flags()
 	return cli.Command{
-		name: 'create'
+		name: 'apply'
 		description: 'Create secret.'
-		execute: secrets_create
+		execute: secrets_apply
 		flags: flags
 	}
 }

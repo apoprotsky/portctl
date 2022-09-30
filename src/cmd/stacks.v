@@ -15,7 +15,7 @@ fn stacks_command() cli.Command {
 			stacks_list_command(),
 			stacks_create_command(),
 			stacks_update_command(),
-			stacks_set_command(),
+			stacks_apply_command(),
 		]
 	}
 }

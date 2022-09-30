@@ -43,7 +43,9 @@ fn stacks_create_work(command cli.Command, client api.Service, parser template.S
 			stack_file_content: content
 			env: env
 		}
+		eprint('Stack $name not found in endpoint $endpoint, creating ... ')
 		client.create_stack(endpoint_id, request)?
+		eprintln('OK')
 		return
 	}
 	return error('stack $name already exists in endpoint $endpoint')

@@ -44,7 +44,9 @@ fn stacks_update_work(command cli.Command, client api.Service, parser template.S
 		env: env
 		prune: prune
 	}
+	eprint('Stack $name found in endpoint $endpoint, updating ... ')
 	client.update_stack(stack.id, endpoint_id, request)?
+	eprintln('OK')
 }
 
 fn stacks_update_command() cli.Command {

@@ -28,8 +28,10 @@ fn configs_create_work(command cli.Command, client api.Service, parser template.
 			name: name
 			data: data
 		}
+		eprint('Config $name not found, creating ... ')
 		client.create_config(endpoint_id, request)?
-		print(request.name)
+		eprintln('OK')
+		print(name)
 		return
 	}
 	if config.spec.data != data {

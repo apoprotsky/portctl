@@ -14,6 +14,26 @@ fn secrets_command() cli.Command {
 		commands: [
 			secrets_list_command(),
 			secrets_create_command(),
+			secrets_apply_command(),
 		]
 	}
+}
+
+fn get_secrets_flags() []cli.Flag {
+	return [
+		cli.Flag{
+			flag: .string
+			name: 'name'
+			abbrev: 'n'
+			description: 'Secret name'
+			required: true
+		},
+		cli.Flag{
+			flag: .string
+			name: 'file'
+			abbrev: 'f'
+			description: 'Secret template file'
+			required: true
+		},
+	]
 }
