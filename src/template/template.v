@@ -34,7 +34,9 @@ pub fn (s &Service) parse_ini_file(file string) ?map[string]string {
 	mut result := map[string]string{}
 	for line in lines {
 		parts := line.split('=')
-		if parts.len < 2 { continue }
+		if parts.len < 2 {
+			continue
+		}
 		result[parts[0].trim_space()] = parts[1].trim_space()
 	}
 	return result
