@@ -10,9 +10,8 @@ fn (s &Service) parse(data string) ?string {
 
 fn (s Service) parse_variables(re regex.RE, data string, start int, end int) string {
 	parts := data[start + 2..end - 2].split(':')
-	cutset := ' \t\n\r\v\f'
-	source := parts[0].trim(cutset)
-	name := parts[1].trim(cutset)
+	source := parts[0].trim_space()
+	name := parts[1].trim_space()
 	return match source {
 		'env' { s.get_enviroment_variable(name) }
 		'vault' { s.get_vault_variable(name) }

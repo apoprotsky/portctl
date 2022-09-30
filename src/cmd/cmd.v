@@ -20,6 +20,7 @@ pub fn get_commands() []cli.Command {
 		endpoints_command(),
 		configs_command(),
 		secrets_command(),
+		stacks_command(),
 	]
 }
 

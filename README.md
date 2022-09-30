@@ -6,12 +6,12 @@ List objects:
 - [x] Portainer endpoints
 - [x] Docker Swarm secrets
 - [x] Docker Swarm configs
-- [ ] Docker Swarm stacks
+- [x] Docker Swarm stacks
 
 Create objects:
 - [x] Docker Swarm secrets
 - [x] Docker Swarm configs
-- [ ] Docker Swarm stacks
+- [x] Docker Swarm stacks
 
 Update objects:
 - [ ] Docker Swarm stacks
