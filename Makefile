@@ -40,4 +40,4 @@ prod:
 	@v -prod -skip-unused -o dist/portctl . && echo 'Build OK'
 
 clean:
-	@[ -f dist/runj ] && rm dist/portctl
+	@[ -f dist/portctl ] && rm dist/portctl
