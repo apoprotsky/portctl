@@ -14,7 +14,7 @@ Create objects:
 - [x] Docker Swarm stacks
 
 Update objects:
-- [ ] Docker Swarm stacks
+- [x] Docker Swarm stacks
 
 Delete objects:
 - [ ] Docker Swarm secrets
@@ -22,7 +22,7 @@ Delete objects:
 - [ ] Docker Swarm stacks
 
 Other:
-- [x] Render templates for Docker Swarm secrets and configs using environment variables or Hashicorp Vault KV secrets
+- [x] Render templates for Docker Swarm secrets, configs or stack variables file using environment variables or Hashicorp Vault KV secrets
 - [x] Postfix based on data is added to Docker Swarm secrets and configs names
 
 # Environment for development

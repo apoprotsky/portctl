@@ -4,12 +4,19 @@ import net.http
 import src.entities
 import src.common
 
-pub struct StackPostRequest {
+pub struct StackCreateRequest {
 pub:
 	name               string
 	swarm_id           string                   [json: swarmID]
 	stack_file_content string                   [json: stackFileContent]
 	env                []entities.StackVariable [json: env]
+}
+
+pub struct StackUpdateRequest {
+pub:
+	stack_file_content string                   [json: stackFileContent]
+	env                []entities.StackVariable [json: env]
+	prune              bool
 }
 
 // get_stacks returns array of Stack
@@ -40,9 +47,15 @@ pub fn (s &Service) get_swarm_id_by_endpoint_id(endpoint_id u32) ?string {
 }
 
 // create_stack creates new stack
-pub fn (s &Service) create_stack(endpoint_id u32, data StackPostRequest) ? {
+pub fn (s &Service) create_stack(endpoint_id u32, data StackCreateRequest) ? {
 	typ := 1 // Swarm stack
 	method := 'string' // Stack data passed as string
-	s.call<StackPostRequest, common.Empty>('stacks?type=$typ&method=$method&endpointId=$endpoint_id',
+	s.call<StackCreateRequest, common.Empty>('stacks?type=$typ&method=$method&endpointId=$endpoint_id',
 		http.Method.post, data)?
+}
+
+// update_stack updates existing stack
+pub fn (s &Service) update_stack(stack_id u32, endpoint_id u32, data StackUpdateRequest) ? {
+	s.call<StackUpdateRequest, common.Empty>('stacks/$stack_id?endpointId=$endpoint_id',
+		http.Method.put, data)?
 }
