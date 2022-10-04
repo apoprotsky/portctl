@@ -2,8 +2,8 @@ module cmd
 
 import cli
 import os
-import src.common
-import src.services
+import src.api
+import src.template
 
 const (
 	desc_env               = 'Environment variable'
@@ -24,8 +24,75 @@ pub fn get_commands() []cli.Command {
 	]
 }
 
-fn get_services(flags []cli.Flag) common.Services {
-	return services.new(flags)
+fn command(command cli.Command) ? {
+	client := api.new(command.flags)
+	parser := template.new(command.flags)
+	match command.name {
+		'apply' {
+			match command.parent.name {
+				'configs' {
+					return configs_apply(command, client, parser)
+				}
+				'secrets' {
+					return secrets_apply(command, client, parser)
+				}
+				'stacks' {
+					return stacks_apply(command, client, parser)
+				}
+				else {
+					println('Unknown command')
+				}
+			}
+		}
+		'create' {
+			match command.parent.name {
+				'configs' {
+					return configs_create(command, client, parser)
+				}
+				'secrets' {
+					return secrets_create(command, client, parser)
+				}
+				'stacks' {
+					return stacks_create(command, client, parser)
+				}
+				else {
+					println('Unknown command')
+				}
+			}
+		}
+		'list' {
+			match command.parent.name {
+				'configs' {
+					return configs_list(command, client)
+				}
+				'endpoints' {
+					return endpoints_list(command, client)
+				}
+				'secrets' {
+					return secrets_list(command, client)
+				}
+				'stacks' {
+					return stacks_list(command, client)
+				}
+				else {
+					println('Unknown command')
+				}
+			}
+		}
+		'update' {
+			match command.parent.name {
+				'update' {
+					return stacks_update(command, client, parser)
+				}
+				else {
+					println('Unknown command')
+				}
+			}
+		}
+		else {
+			println('Unknown command')
+		}
+	}
 }
 
 fn get_default_flag_value(flag string) string {

@@ -2,20 +2,10 @@ module cmd
 
 import cli
 import encoding.base64
-import src.common
 import src.api
 import src.template
 
-fn secrets_create(command cli.Command) ? {
-	services := get_services(command.flags)
-	client := services.get_service(common.ServicesNames.api)
-	parser := services.get_service(common.ServicesNames.template)
-	if client is api.Service && parser is template.Service {
-		return secrets_create_work(command, client, parser)
-	}
-}
-
-fn secrets_create_work(command cli.Command, client api.Service, parser template.Service) ? {
+fn secrets_create(command cli.Command, client api.Service, parser template.Service) ? {
 	endpoint := command.flags.get_string('endpoint')?
 	endpoint_id := client.get_endpoint_id_by_name(endpoint)?
 	mut name := command.flags.get_string('name')?
@@ -45,7 +35,7 @@ fn secrets_create_command() cli.Command {
 	return cli.Command{
 		name: 'create'
 		description: 'Create secret.'
-		execute: secrets_create
+		execute: command
 		flags: flags
 	}
 }

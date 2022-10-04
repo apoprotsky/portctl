@@ -1,7 +1,6 @@
 module api
 
 import net.http
-import src.common
 
 struct ConfigSpec {
 pub:
@@ -23,8 +22,8 @@ pub:
 
 // get_configs returns array of Config
 pub fn (s &Service) get_configs(endpoint_id u32) ?[]Config {
-	return s.call<common.Empty, []Config>('endpoints/$endpoint_id/docker/configs', http.Method.get,
-		common.Empty{})
+	return s.call<Empty, []Config>('endpoints/$endpoint_id/docker/configs', http.Method.get,
+		Empty{})
 }
 
 // get_config_by_name returns Config by name
@@ -40,6 +39,6 @@ pub fn (s &Service) get_config_by_name(endpoint_id u32, name string) ?Config {
 
 // create_config creates new Config
 pub fn (s &Service) create_config(endpoint_id u32, data ConfigPostRequest) ? {
-	s.call<ConfigPostRequest, common.Empty>('endpoints/$endpoint_id/docker/configs/create',
-		http.Method.post, data)?
+	s.call<ConfigPostRequest, Empty>('endpoints/$endpoint_id/docker/configs/create', http.Method.post,
+		data)?
 }

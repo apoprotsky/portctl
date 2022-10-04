@@ -5,22 +5,16 @@ import crypto.md5
 import encoding.base58
 import json
 import net.http
-import src.common
+
+pub struct Empty {}
 
 pub struct Service {
 	api   string = 'http://127.0.0.1:9000'
 	token string
-mut:
-	services common.Services = common.EmptyServices{}
-}
-
-// set_services updates services field
-pub fn (mut s Service) set_services(services common.Services) {
-	s.services = services
 }
 
 // new returns instance of Portainer API service
-pub fn new(flags []cli.Flag) common.Service {
+pub fn new(flags []cli.Flag) Service {
 	api := flags.get_string('api') or { panic(err) }
 	token := flags.get_string('token') or { panic(err) }
 	return Service{

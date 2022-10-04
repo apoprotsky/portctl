@@ -1,7 +1,6 @@
 module api
 
 import net.http
-import src.common
 
 struct SecretSpec {
 pub:
@@ -22,8 +21,8 @@ pub:
 
 // get_secrets returns array of Secret
 pub fn (s &Service) get_secrets(endpoint_id u32) ?[]Secret {
-	return s.call<common.Empty, []Secret>('endpoints/$endpoint_id/docker/secrets', http.Method.get,
-		common.Empty{})
+	return s.call<Empty, []Secret>('endpoints/$endpoint_id/docker/secrets', http.Method.get,
+		Empty{})
 }
 
 // get_secret_by_name returns Secret by name
@@ -39,6 +38,6 @@ pub fn (s &Service) get_secret_by_name(endpoint_id u32, name string) ?Secret {
 
 // create_secret creates new Secret
 pub fn (s &Service) create_secret(endpoint_id u32, data SecretPostRequest) ? {
-	s.call<SecretPostRequest, common.Empty>('endpoints/$endpoint_id/docker/secrets/create',
-		http.Method.post, data)?
+	s.call<SecretPostRequest, Empty>('endpoints/$endpoint_id/docker/secrets/create', http.Method.post,
+		data)?
 }

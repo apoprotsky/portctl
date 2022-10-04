@@ -2,20 +2,10 @@ module cmd
 
 import cli
 import encoding.base64
-import src.common
 import src.api
 import src.template
 
-fn configs_apply(command cli.Command) ? {
-	services := get_services(command.flags)
-	client := services.get_service(common.ServicesNames.api)
-	parser := services.get_service(common.ServicesNames.template)
-	if client is api.Service && parser is template.Service {
-		return configs_apply_work(command, client, parser)
-	}
-}
-
-fn configs_apply_work(command cli.Command, client api.Service, parser template.Service) ? {
+fn configs_apply(command cli.Command, client api.Service, parser template.Service) ? {
 	endpoint := command.flags.get_string('endpoint')?
 	endpoint_id := client.get_endpoint_id_by_name(endpoint)?
 	mut name := command.flags.get_string('name')?
@@ -49,7 +39,7 @@ fn configs_apply_command() cli.Command {
 	return cli.Command{
 		name: 'apply'
 		description: 'Create config.'
-		execute: configs_apply
+		execute: command
 		flags: flags
 	}
 }

@@ -12,8 +12,8 @@ struct VaultKVResponse {
 }
 
 fn (s &Service) get_vault_variable(name string) string {
-	vault_addr := s.services.get_flag('vault-addr')
-	vault_token := s.services.get_flag('vault-token')
+	vault_addr := s.get_flag('vault-addr')
+	vault_token := s.get_flag('vault-token')
 	parts := name.split('.')
 	if parts.len < 2 {
 		eprintln('Field name of Vault secret is not specified: $name')

@@ -3,20 +3,10 @@ module cmd
 import cli
 import os
 import src.api
-import src.common
 import src.entities
 import src.template
 
-fn stacks_update(command cli.Command) ? {
-	services := get_services(command.flags)
-	client := services.get_service(common.ServicesNames.api)
-	parser := services.get_service(common.ServicesNames.template)
-	if client is api.Service && parser is template.Service {
-		return stacks_update_work(command, client, parser)
-	}
-}
-
-fn stacks_update_work(command cli.Command, client api.Service, parser template.Service) ? {
+fn stacks_update(command cli.Command, client api.Service, parser template.Service) ? {
 	endpoint := command.flags.get_string('endpoint')?
 	endpoint_id := client.get_endpoint_id_by_name(endpoint)?
 	name := command.flags.get_string('name')?
@@ -64,7 +54,7 @@ fn stacks_update_command() cli.Command {
 	return cli.Command{
 		name: 'update'
 		description: 'Update stack.'
-		execute: stacks_update
+		execute: command
 		flags: flags
 	}
 }
