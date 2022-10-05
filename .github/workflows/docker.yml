@@ -1,4 +1,5 @@
 name: docker
+run-name: Build Docker image ${{ github.ref_name }}
 
 on:
   create:
