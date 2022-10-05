@@ -10,7 +10,7 @@ fn stacks_create(command cli.Command, client api.Service, parser template.Servic
 	endpoint := command.flags.get_string('endpoint')?
 	endpoint_id := client.get_endpoint_id_by_name(endpoint)?
 	name := command.flags.get_string('name')?
-	swarm_id := client.get_swarm_id_by_endpoint_id(endpoint_id)?
+	swarm_id := client.get_swarm_id(endpoint_id)?
 	file := command.flags.get_string('file')?
 	if !os.exists(file) {
 		return error('file $file not exists')
@@ -26,7 +26,7 @@ fn stacks_create(command cli.Command, client api.Service, parser template.Servic
 			value: variables[key]
 		}
 	}
-	client.get_stack_by_endpoint_id_and_name(endpoint_id, name) or {
+	client.get_stack(endpoint_id, name) or {
 		request := api.StackCreateRequest{
 			name: name
 			swarm_id: swarm_id

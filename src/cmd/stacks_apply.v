@@ -8,7 +8,7 @@ fn stacks_apply(command cli.Command, client api.Service, parser template.Service
 	endpoint := command.flags.get_string('endpoint')?
 	endpoint_id := client.get_endpoint_id_by_name(endpoint)?
 	name := command.flags.get_string('name')?
-	client.get_stack_by_endpoint_id_and_name(endpoint_id, name) or {
+	client.get_stack(endpoint_id, name) or {
 		stacks_create(command, client, parser)?
 		return
 	}

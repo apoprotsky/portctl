@@ -41,3 +41,9 @@ pub fn (s &Service) create_secret(endpoint_id u32, data SecretPostRequest) ? {
 	s.call<SecretPostRequest, Empty>('endpoints/$endpoint_id/docker/secrets/create', http.Method.post,
 		data)?
 }
+
+// delete_secret deletes Secret by id
+pub fn (s &Service) delete_secret(endpoint_id u32, id string) ? {
+	s.call<Empty, Empty>('endpoints/$endpoint_id/docker/secrets/$id', http.Method.delete,
+		Empty{})?
+}

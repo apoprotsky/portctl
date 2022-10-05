@@ -1,4 +1,4 @@
-`portctl` (`Port`ainer `C`on`t`ro`l`) is a command line interface client for managing resources in Portainer
+`portctl` (`Port`ainer `C`on`t`ro`l`) is a command line interface tool for managing resources in `Portainer`
 
 # How to use
 
@@ -86,20 +86,20 @@ List:
 - `Portainer` endpoints
 - `Docker Swarm` configs, secrets, stacks
 
-Create objects:
+Create:
 - `Docker Swarm` configs, secrets, stacks
 
 Update:
 - `Docker Swarm` stacks
 
-Delete objects:
+Delete:
 - [ ] Docker Swarm secrets
 - [ ] Docker Swarm configs
 - [ ] Docker Swarm stacks
 
 Other:
 - Render templates for `Docker Swarm` secrets, configs or stack variables file using environment variables or `Hashicorp Vault` KV secrets
-- Postfix (`-` followed by five symbols from `base58` string of `md5` hash of data) is added to `Docker Swarm` secrets and configs names on creation
+- Postfix (`-` followed by five symbols from `base58` string of `md5` hash of data) is added to `Docker Swarm` secrets and configs names on creation to make them unique
 
 # Environment for development
 

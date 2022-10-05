@@ -34,12 +34,20 @@ pub fn (s &Service) call<I, O>(endpoint string, method http.Method, request I) ?
 		data: json.encode(request)
 	}
 	result := http.fetch(config)?
-	status := http.Status.ok
-	if status.int() == result.status_code {
-		response := json.decode(O, result.body)?
-		return response
+	status_ok := http.Status.ok.int()
+	status_no_content := http.Status.no_content.int()
+	match result.status_code {
+		status_ok {
+			response := json.decode(O, result.body)?
+			return response
+		}
+		status_no_content {
+			return O{}
+		}
+		else {
+			return error('Error in API call: $result.status_code $result.status_msg\nResponse: $result.body')
+		}
 	}
-	return error('Error in API call: $result.status_code $result.status_msg\nResponse: $result.body')
 }
 
 // get_postfix returns postfix base on data

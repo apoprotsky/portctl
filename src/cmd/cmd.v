@@ -14,11 +14,13 @@ const (
 	env_vault_token        = 'VAULT_TOKEN'
 )
 
+type Command = fn (cli.Command, api.Service, template.Service) ?
+
 // get_commands returns array of available commands
 pub fn get_commands() []cli.Command {
 	return [
-		endpoints_command(),
 		configs_command(),
+		endpoints_command(),
 		secrets_command(),
 		stacks_command(),
 	]
@@ -27,72 +29,24 @@ pub fn get_commands() []cli.Command {
 fn command(command cli.Command) ? {
 	client := api.new(command.flags)
 	parser := template.new(command.flags)
-	match command.name {
-		'apply' {
-			match command.parent.name {
-				'configs' {
-					return configs_apply(command, client, parser)
-				}
-				'secrets' {
-					return secrets_apply(command, client, parser)
-				}
-				'stacks' {
-					return stacks_apply(command, client, parser)
-				}
-				else {
-					println('Unknown command')
-				}
-			}
-		}
-		'create' {
-			match command.parent.name {
-				'configs' {
-					return configs_create(command, client, parser)
-				}
-				'secrets' {
-					return secrets_create(command, client, parser)
-				}
-				'stacks' {
-					return stacks_create(command, client, parser)
-				}
-				else {
-					println('Unknown command')
-				}
-			}
-		}
-		'list' {
-			match command.parent.name {
-				'configs' {
-					return configs_list(command, client)
-				}
-				'endpoints' {
-					return endpoints_list(command, client)
-				}
-				'secrets' {
-					return secrets_list(command, client)
-				}
-				'stacks' {
-					return stacks_list(command, client)
-				}
-				else {
-					println('Unknown command')
-				}
-			}
-		}
-		'update' {
-			match command.parent.name {
-				'update' {
-					return stacks_update(command, client, parser)
-				}
-				else {
-					println('Unknown command')
-				}
-			}
-		}
-		else {
-			println('Unknown command')
-		}
+	commands := {
+		'configs apply':  configs_apply
+		'configs create': configs_create
+		'configs delete': configs_delete
+		'configs list':   configs_list
+		'endpoints list': endpoints_list
+		'secrets apply':  secrets_apply
+		'secrets create': secrets_create
+		'secrets delete': secrets_delete
+		'secrets list':   secrets_list
+		'stacks apply':   stacks_apply
+		'stacks create':  stacks_create
+		'stacks delete':  stacks_delete
+		'stacks list':    stacks_list
+		'stacks update':  stacks_update
 	}
+	func := commands['$command.parent.name $command.name']
+	return func(command, client, parser)
 }
 
 fn get_default_flag_value(flag string) string {

@@ -26,7 +26,7 @@ fn stacks_update(command cli.Command, client api.Service, parser template.Servic
 		}
 	}
 	prune := command.flags.get_bool('prune')?
-	stack := client.get_stack_by_endpoint_id_and_name(endpoint_id, name) or {
+	stack := client.get_stack(endpoint_id, name) or {
 		return error('stack $name not exists in endpoint $endpoint')
 	}
 	request := api.StackUpdateRequest{
@@ -35,7 +35,7 @@ fn stacks_update(command cli.Command, client api.Service, parser template.Servic
 		prune: prune
 	}
 	eprint('Stack $name found in endpoint $endpoint, updating ... ')
-	client.update_stack(stack.id, endpoint_id, request)?
+	client.update_stack(endpoint_id, stack.id, request)?
 	eprintln('OK')
 }
 

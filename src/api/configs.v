@@ -26,8 +26,8 @@ pub fn (s &Service) get_configs(endpoint_id u32) ?[]Config {
 		Empty{})
 }
 
-// get_config_by_name returns Config by name
-pub fn (s &Service) get_config_by_name(endpoint_id u32, name string) ?Config {
+// get_config returns Config by name
+pub fn (s &Service) get_config(endpoint_id u32, name string) ?Config {
 	response := s.get_configs(endpoint_id)?
 	for config in response {
 		if config.spec.name == name {
@@ -41,4 +41,10 @@ pub fn (s &Service) get_config_by_name(endpoint_id u32, name string) ?Config {
 pub fn (s &Service) create_config(endpoint_id u32, data ConfigPostRequest) ? {
 	s.call<ConfigPostRequest, Empty>('endpoints/$endpoint_id/docker/configs/create', http.Method.post,
 		data)?
+}
+
+// delete_config deletes Config by id
+pub fn (s &Service) delete_config(endpoint_id u32, id string) ? {
+	s.call<Empty, Empty>('endpoints/$endpoint_id/docker/configs/$id', http.Method.delete,
+		Empty{})?
 }

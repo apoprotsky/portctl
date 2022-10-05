@@ -3,17 +3,18 @@ module cmd
 import cli
 import net.http
 import src.api
+import src.template
 
 struct SecretSpec {
 	name string [json: Name]
 }
 
-struct Secret {
+pub struct Secret {
 	id   string     [json: ID]
 	spec SecretSpec [json: Spec]
 }
 
-fn secrets_list(command cli.Command, client api.Service) ? {
+fn secrets_list(command cli.Command, client api.Service, parser template.Service) ? {
 	endpoint := command.flags.get_string('endpoint')?
 	endpoint_id := client.get_endpoint_id_by_name(endpoint)?
 	response := client.call<api.Empty, []Secret>('endpoints/$endpoint_id/docker/secrets',

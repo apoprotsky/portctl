@@ -12,15 +12,16 @@ fn stacks_command() cli.Command {
 		description: 'Stacks management.'
 		execute: stacks
 		commands: [
-			stacks_list_command(),
-			stacks_create_command(),
-			stacks_update_command(),
 			stacks_apply_command(),
+			stacks_create_command(),
+			stacks_delete_command(),
+			stacks_list_command(),
+			stacks_update_command(),
 		]
 	}
 }
 
-fn get_stacks_flags() []cli.Flag {
+fn get_stacks_name_flag() []cli.Flag {
 	return [
 		cli.Flag{
 			flag: .string
@@ -29,6 +30,12 @@ fn get_stacks_flags() []cli.Flag {
 			description: 'Stack name'
 			required: true
 		},
+	]
+}
+
+fn get_stacks_flags() []cli.Flag {
+	mut flags := get_stacks_name_flag()
+	flags << [
 		cli.Flag{
 			flag: .string
 			name: 'file'
@@ -44,4 +51,5 @@ fn get_stacks_flags() []cli.Flag {
 			required: true
 		},
 	]
+	return flags
 }

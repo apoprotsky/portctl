@@ -12,14 +12,15 @@ fn configs_command() cli.Command {
 		description: 'Configs management.'
 		execute: configs
 		commands: [
-			configs_list_command(),
-			configs_create_command(),
 			configs_apply_command(),
+			configs_create_command(),
+			configs_delete_command(),
+			configs_list_command(),
 		]
 	}
 }
 
-fn get_configs_flags() []cli.Flag {
+fn get_configs_name_flag() []cli.Flag {
 	return [
 		cli.Flag{
 			flag: .string
@@ -28,12 +29,17 @@ fn get_configs_flags() []cli.Flag {
 			description: 'Config name'
 			required: true
 		},
-		cli.Flag{
-			flag: .string
-			name: 'file'
-			abbrev: 'f'
-			description: 'Config template file'
-			required: true
-		},
 	]
+}
+
+fn get_configs_flags() []cli.Flag {
+	mut flags := get_configs_name_flag()
+	flags << cli.Flag{
+		flag: .string
+		name: 'file'
+		abbrev: 'f'
+		description: 'Config template file'
+		required: true
+	}
+	return flags
 }

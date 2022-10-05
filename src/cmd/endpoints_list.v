@@ -2,8 +2,9 @@ module cmd
 
 import cli
 import src.api
+import src.template
 
-fn endpoints_list(command cli.Command, client api.Service) ? {
+fn endpoints_list(command cli.Command, client api.Service, parser template.Service) ? {
 	response := client.get_endpoints()?
 	println('${'ID':-5}${'NAME':-15}${'URL':-20}')
 	for endpoint in response {

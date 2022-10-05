@@ -13,7 +13,7 @@ fn configs_create(command cli.Command, client api.Service, parser template.Servi
 	content := parser.parse_file(file)?
 	data := base64.encode_str(content)
 	name = name + api.get_postfix(data)
-	config := client.get_config_by_name(endpoint_id, name) or {
+	config := client.get_config(endpoint_id, name) or {
 		request := api.ConfigPostRequest{
 			name: name
 			data: data
