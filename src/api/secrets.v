@@ -4,7 +4,8 @@ import net.http
 
 struct SecretSpec {
 pub:
-	name string [json: Name]
+	name   string            [json: Name]
+	labels map[string]string [json: Labels]
 }
 
 pub struct Secret {
@@ -15,8 +16,9 @@ pub:
 
 pub struct SecretPostRequest {
 pub:
-	name string [json: Name]
-	data string [json: Data]
+	name   string            [json: Name]
+	labels map[string]string [json: Labels]
+	data   string            [json: Data]
 }
 
 // get_secrets returns array of Secret

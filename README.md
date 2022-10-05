@@ -83,23 +83,23 @@ portctl stacks list
 # Features
 
 List:
-- `Portainer` endpoints
-- `Docker Swarm` configs, secrets, stacks
+- `Portainer` endpoints, stacks for `Docker Swarm`
+- `Docker Swarm` configs, secrets
 
 Create:
-- `Docker Swarm` configs, secrets, stacks
+- `Portainer` stacks for `Docker Swarm`
+- `Docker Swarm` configs, secrets
 
 Update:
-- `Docker Swarm` stacks
+- `Portainer` stacks for `Docker Swarm`
 
 Delete:
-- [ ] Docker Swarm secrets
-- [ ] Docker Swarm configs
-- [ ] Docker Swarm stacks
+- `Portainer` stacks for `Docker Swarm`
+- `Docker Swarm` configs, secrets
 
 Other:
 - Render templates for `Docker Swarm` secrets, configs or stack variables file using environment variables or `Hashicorp Vault` KV secrets
-- Postfix (`-` followed by five symbols from `base58` string of `md5` hash of data) is added to `Docker Swarm` secrets and configs names on creation to make them unique
+- Postfix (`-` followed by five symbols from `base58` string of `md5` hash of data) is adding to `Docker Swarm` secrets and configs names on creation to make them unique
 
 # Environment for development
 

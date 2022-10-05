@@ -12,6 +12,7 @@ const (
 	env_portainer_endpoint = 'PORTAINER_ENDPOINT'
 	env_vault_addr         = 'VAULT_ADDR'
 	env_vault_token        = 'VAULT_TOKEN'
+	label_name             = 'portctl.name'
 )
 
 type Command = fn (cli.Command, api.Service, template.Service) ?

@@ -4,8 +4,9 @@ import net.http
 
 struct ConfigSpec {
 pub:
-	name string [json: Name]
-	data string [json: Data]
+	name   string            [json: Name]
+	labels map[string]string [json: Labels]
+	data   string            [json: Data]
 }
 
 pub struct Config {
@@ -16,8 +17,9 @@ pub:
 
 pub struct ConfigPostRequest {
 pub:
-	name string [json: Name]
-	data string [json: Data]
+	name   string            [json: Name]
+	labels map[string]string [json: Labels]
+	data   string            [json: Data]
 }
 
 // get_configs returns array of Config

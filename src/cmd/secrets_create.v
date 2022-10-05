@@ -8,14 +8,17 @@ import src.template
 fn secrets_create(command cli.Command, client api.Service, parser template.Service) ? {
 	endpoint := command.flags.get_string('endpoint')?
 	endpoint_id := client.get_endpoint_id_by_name(endpoint)?
-	mut name := command.flags.get_string('name')?
+	name_flag := command.flags.get_string('name')?
 	file := command.flags.get_string('file')?
 	content := parser.parse_file(file)?
 	data := base64.encode_str(content)
-	name = name + api.get_postfix(data)
+	name := name_flag + api.get_postfix(data)
 	client.get_secret_by_name(endpoint_id, name) or {
 		request := api.SecretPostRequest{
 			name: name
+			labels: {
+				label_name: name_flag
+			}
 			data: data
 		}
 		eprint('Secret $name not found, creating ... ')
