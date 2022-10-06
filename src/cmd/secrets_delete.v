@@ -9,7 +9,7 @@ fn secrets_delete(command cli.Command, client api.Service, parser template.Servi
 	endpoint_id := client.get_endpoint_id_by_name(endpoint)?
 	name := command.flags.get_string('name')?
 	secret := client.get_secret_by_name(endpoint_id, name) or {
-		eprint('Secret $name not found, nothing to do ... OK')
+		eprintln('Secret $name not found, nothing to do ... OK')
 		return
 	}
 	eprint('Secret $name found, deleting ... ')

@@ -9,7 +9,7 @@ fn configs_delete(command cli.Command, client api.Service, parser template.Servi
 	endpoint_id := client.get_endpoint_id_by_name(endpoint)?
 	name := command.flags.get_string('name')?
 	config := client.get_config(endpoint_id, name) or {
-		eprint('Config $name not found, nothing to do ... OK')
+		eprintln('Config $name not found, nothing to do ... OK')
 		return
 	}
 	eprint('Config $name found, deleting ... ')

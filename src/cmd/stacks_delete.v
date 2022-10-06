@@ -9,7 +9,7 @@ fn stacks_delete(command cli.Command, client api.Service, parser template.Servic
 	endpoint_id := client.get_endpoint_id_by_name(endpoint)?
 	name := command.flags.get_string('name')?
 	stack := client.get_stack(endpoint_id, name) or {
-		eprint('Stack $name not found, nothing to do ... OK')
+		eprintln('Stack $name not found, nothing to do ... OK')
 		return
 	}
 	eprint('Stack $name found, deleting ... ')
