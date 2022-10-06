@@ -45,7 +45,8 @@ pub fn (s &Service) call<I, O>(endpoint string, method http.Method, request I) ?
 			return O{}
 		}
 		else {
-			return error('Error in API call: $result.status_code $result.status_msg\nResponse: $result.body')
+			return error_with_code('Error in API call: $result.status_code $result.status_msg\nResponse: $result.body',
+				result.status_code)
 		}
 	}
 }
