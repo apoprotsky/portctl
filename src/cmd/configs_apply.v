@@ -2,6 +2,7 @@ module cmd
 
 import cli
 import encoding.base64
+import net.http
 import src.api
 import src.template
 
@@ -24,6 +25,7 @@ fn configs_apply(command cli.Command, client api.Service, parser template.Servic
 		eprint('Config $name not found, creating ... ')
 		client.create_config(endpoint_id, request)?
 		eprintln('OK')
+		configs_apply_clean(client, endpoint_id, name_flag, [name])?
 		print(name)
 		return
 	}
@@ -31,7 +33,27 @@ fn configs_apply(command cli.Command, client api.Service, parser template.Servic
 		return error('config name $name does not match content')
 	}
 	eprintln('Config $name found, nothing to do ... OK')
+	configs_apply_clean(client, endpoint_id, name_flag, [name])?
 	print(name)
+}
+
+fn configs_apply_clean(client api.Service, endpoint_id u32, name string, exclude []string) ? {
+	configs := client.get_configs_staled(endpoint_id, label_name, name, exclude)?
+	if configs.len == 0 {
+		return
+	}
+	for config in configs {
+		eprint('Delete old config $config.spec.name ... ')
+		mut result := 'OK'
+		client.delete_config(endpoint_id, config.id) or {
+			result = if err.code() == http.Status.bad_request.int() {
+				'FAIL, config is in use'
+			} else {
+				err.msg()
+			}
+		}
+		eprintln(result)
+	}
 }
 
 fn configs_apply_command() cli.Command {

@@ -82,6 +82,11 @@ portctl stacks list
 
 # Features
 
+Noticeable:
+- Render templates for `Docker Swarm` secrets, configs or stack variables file using environment variables or `Hashicorp Vault` KV secrets
+- Postfix (`-` followed by five symbols from `base58` string of `md5` hash of data) is adding to `Docker Swarm` secrets and configs names on creation to make them unique
+- Apply commands try to delete staled `Docker Swarm` configs and secrets. Configs and secrets consider as staled if its name is not equal current and resource are below first [TaskHistoryRetentionLimit](https://docs.docker.com/engine/reference/commandline/swarm_init/#--task-history-limit) items in list ordered by date.
+
 List:
 - `Portainer` endpoints, stacks for `Docker Swarm`
 - `Docker Swarm` configs, secrets
@@ -96,10 +101,6 @@ Update:
 Delete:
 - `Portainer` stacks for `Docker Swarm`
 - `Docker Swarm` configs, secrets
-
-Other:
-- Render templates for `Docker Swarm` secrets, configs or stack variables file using environment variables or `Hashicorp Vault` KV secrets
-- Postfix (`-` followed by five symbols from `base58` string of `md5` hash of data) is adding to `Docker Swarm` secrets and configs names on creation to make them unique
 
 # Environment for development
 
