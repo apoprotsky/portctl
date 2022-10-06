@@ -11,8 +11,10 @@ pub:
 
 pub struct Config {
 pub:
-	id   string     [json: ID]
-	spec ConfigSpec [json: Spec]
+	id         string     [json: ID]
+	created_at string     [json: CreatedAt]
+	updated_at string     [json: UpdatedAt]
+	spec       ConfigSpec [json: Spec]
 }
 
 pub struct ConfigPostRequest {
@@ -26,6 +28,25 @@ pub:
 pub fn (s &Service) get_configs(endpoint_id u32) ?[]Config {
 	return s.call<Empty, []Config>('endpoints/$endpoint_id/docker/configs', http.Method.get,
 		Empty{})
+}
+
+// get_configs_staled returns array of Config by label value
+pub fn (s &Service) get_configs_staled(endpoint_id u32, label string, value string, exclude []string) ?[]Config {
+	swarm := s.get_swarm(endpoint_id)?
+	mut response := s.get_configs(endpoint_id)?
+	response.sort(a.updated_at > b.updated_at)
+	mut configs := []Config{}
+	mut count := 0
+	for config in response {
+		val := config.spec.labels[label] or { continue }
+		if val == value && config.spec.name !in exclude {
+			if count < swarm.spec.orchestration.task_history_retention_limit {
+				continue
+			}
+			configs << config
+		}
+	}
+	return configs
 }
 
 // get_config returns Config by name
