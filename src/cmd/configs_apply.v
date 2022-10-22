@@ -6,12 +6,12 @@ import net.http
 import src.api
 import src.template
 
-fn configs_apply(command cli.Command, client api.Service, parser template.Service) ? {
-	endpoint := command.flags.get_string('endpoint')?
-	endpoint_id := client.get_endpoint_id_by_name(endpoint)?
-	name_flag := command.flags.get_string('name')?
-	file := command.flags.get_string('file')?
-	content := parser.parse_file(file)?
+fn configs_apply(command cli.Command, client api.Service, parser template.Service) ! {
+	endpoint := command.flags.get_string('endpoint')!
+	endpoint_id := client.get_endpoint_id_by_name(endpoint)!
+	name_flag := command.flags.get_string('name')!
+	file := command.flags.get_string('file')!
+	content := parser.parse_file(file)!
 	data := base64.encode_str(content)
 	name := name_flag + api.get_postfix(data)
 	config := client.get_config(endpoint_id, name) or {
@@ -23,9 +23,9 @@ fn configs_apply(command cli.Command, client api.Service, parser template.Servic
 			data: data
 		}
 		eprint('Config $name not found, creating ... ')
-		client.create_config(endpoint_id, request)?
+		client.create_config(endpoint_id, request)!
 		eprintln('OK')
-		configs_apply_clean(client, endpoint_id, name_flag, [name])?
+		configs_apply_clean(client, endpoint_id, name_flag, [name])!
 		print(name)
 		return
 	}
@@ -33,12 +33,12 @@ fn configs_apply(command cli.Command, client api.Service, parser template.Servic
 		return error('config name $name does not match content')
 	}
 	eprintln('Config $name found, nothing to do ... OK')
-	configs_apply_clean(client, endpoint_id, name_flag, [name])?
+	configs_apply_clean(client, endpoint_id, name_flag, [name])!
 	print(name)
 }
 
-fn configs_apply_clean(client api.Service, endpoint_id u32, name string, exclude []string) ? {
-	configs := client.get_configs_staled(endpoint_id, label_name, name, exclude)?
+fn configs_apply_clean(client api.Service, endpoint_id u32, name string, exclude []string) ! {
+	configs := client.get_configs_staled(endpoint_id, label_name, name, exclude)!
 	if configs.len == 0 {
 		return
 	}

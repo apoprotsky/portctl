@@ -15,17 +15,17 @@ pub struct Service {
 }
 
 // parse_file parses template ini file to string
-pub fn (s &Service) parse_file(file string) ?string {
+pub fn (s &Service) parse_file(file string) !string {
 	if !os.exists(file) {
 		return error('file $file not exists')
 	}
-	data := os.read_file(file)?
+	data := os.read_file(file)!
 	return s.parse(data)
 }
 
 // parse_ini_file parses template ini file to map
-pub fn (s &Service) parse_ini_file(file string) ?map[string]string {
-	data := s.parse_file(file)?
+pub fn (s &Service) parse_ini_file(file string) !map[string]string {
+	data := s.parse_file(file)!
 	lines := data.replace('\r', '').split('\n')
 	mut result := map[string]string{}
 	for line in lines {

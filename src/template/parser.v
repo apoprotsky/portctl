@@ -3,8 +3,10 @@ module template
 import os
 import regex
 
-fn (s &Service) parse(data string) ?string {
-	mut re := regex.regex_opt('\\{\\{\\s*(env)|(vault)\\s*:\\s*[-_a-zA-Z0-9\\/\\.]+\\s*\\}\\}')?
+fn (s &Service) parse(data string) !string {
+	mut re := regex.regex_opt('\\{\\{\\s*(env)|(vault)\\s*:\\s*[-_a-zA-Z0-9\\/\\.]+\\s*\\}\\}') or {
+		return error('cannot create regular expression object to parse template')
+	}
 	return re.replace_by_fn(data, s.parse_variables)
 }
 

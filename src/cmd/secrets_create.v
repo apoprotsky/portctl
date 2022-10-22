@@ -5,12 +5,12 @@ import encoding.base64
 import src.api
 import src.template
 
-fn secrets_create(command cli.Command, client api.Service, parser template.Service) ? {
-	endpoint := command.flags.get_string('endpoint')?
-	endpoint_id := client.get_endpoint_id_by_name(endpoint)?
-	name_flag := command.flags.get_string('name')?
-	file := command.flags.get_string('file')?
-	content := parser.parse_file(file)?
+fn secrets_create(command cli.Command, client api.Service, parser template.Service) ! {
+	endpoint := command.flags.get_string('endpoint')!
+	endpoint_id := client.get_endpoint_id_by_name(endpoint)!
+	name_flag := command.flags.get_string('name')!
+	file := command.flags.get_string('file')!
+	content := parser.parse_file(file)!
 	data := base64.encode_str(content)
 	name := name_flag + api.get_postfix(data)
 	client.get_secret_by_name(endpoint_id, name) or {
@@ -22,7 +22,7 @@ fn secrets_create(command cli.Command, client api.Service, parser template.Servi
 			data: data
 		}
 		eprint('Secret $name not found, creating ... ')
-		client.create_secret(endpoint_id, request)?
+		client.create_secret(endpoint_id, request)!
 		eprintln('OK')
 		print(name)
 		return

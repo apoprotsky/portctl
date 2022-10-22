@@ -14,9 +14,9 @@ pub struct Secret {
 	spec SecretSpec [json: Spec]
 }
 
-fn secrets_list(command cli.Command, client api.Service, parser template.Service) ? {
-	endpoint := command.flags.get_string('endpoint')?
-	endpoint_id := client.get_endpoint_id_by_name(endpoint)?
+fn secrets_list(command cli.Command, client api.Service, parser template.Service) ! {
+	endpoint := command.flags.get_string('endpoint')!
+	endpoint_id := client.get_endpoint_id_by_name(endpoint)!
 	response := client.call<api.Empty, []Secret>('endpoints/$endpoint_id/docker/secrets',
 		http.Method.get, api.Empty{}) or {
 		eprintln(err.msg())

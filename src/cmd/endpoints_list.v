@@ -4,8 +4,8 @@ import cli
 import src.api
 import src.template
 
-fn endpoints_list(command cli.Command, client api.Service, parser template.Service) ? {
-	response := client.get_endpoints()?
+fn endpoints_list(command cli.Command, client api.Service, parser template.Service) ! {
+	response := client.get_endpoints()!
 	println('${'ID':-5}${'NAME':-15}${'URL':-20}')
 	for endpoint in response {
 		println('${endpoint.id:-5}${endpoint.name:-15}${endpoint.url:-20}')

@@ -24,21 +24,23 @@ pub fn new(flags []cli.Flag) Service {
 }
 
 // call<I, O> sends request to Portainer API endpoint
-pub fn (s &Service) call<I, O>(endpoint string, method http.Method, request I) ?O {
+pub fn (s &Service) call<I, O>(endpoint string, method http.Method, request I) !O {
 	mut header := http.new_header()
-	header.add_custom('X-API-Key', s.token)?
+	header.add_custom('X-API-Key', s.token)!
 	config := http.FetchConfig{
 		url: '$s.api/$endpoint'
 		method: method
 		header: header
 		data: json.encode(request)
 	}
-	result := http.fetch(config)?
+	result := http.fetch(config)!
 	status_ok := http.Status.ok.int()
 	status_no_content := http.Status.no_content.int()
 	match result.status_code {
 		status_ok {
-			response := json.decode(O, result.body)?
+			response := json.decode(O, result.body) or {
+				return error('Error in API call: cannot decode result: $err.msg()')
+			}
 			return response
 		}
 		status_no_content {

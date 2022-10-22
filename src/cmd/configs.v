@@ -2,7 +2,7 @@ module cmd
 
 import cli
 
-fn configs(command cli.Command) ? {
+fn configs(command cli.Command) {
 	command.execute_help()
 }
 

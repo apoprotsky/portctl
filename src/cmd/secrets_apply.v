@@ -6,12 +6,12 @@ import net.http
 import src.api
 import src.template
 
-fn secrets_apply(command cli.Command, client api.Service, parser template.Service) ? {
-	endpoint := command.flags.get_string('endpoint')?
-	endpoint_id := client.get_endpoint_id_by_name(endpoint)?
-	name_flag := command.flags.get_string('name')?
-	file := command.flags.get_string('file')?
-	content := parser.parse_file(file)?
+fn secrets_apply(command cli.Command, client api.Service, parser template.Service) ! {
+	endpoint := command.flags.get_string('endpoint')!
+	endpoint_id := client.get_endpoint_id_by_name(endpoint)!
+	name_flag := command.flags.get_string('name')!
+	file := command.flags.get_string('file')!
+	content := parser.parse_file(file)!
 	data := base64.encode_str(content)
 	name := name_flag + api.get_postfix(data)
 	client.get_secret_by_name(endpoint_id, name) or {
@@ -23,19 +23,19 @@ fn secrets_apply(command cli.Command, client api.Service, parser template.Servic
 			data: data
 		}
 		eprint('Secret $name not found, creating ... ')
-		client.create_secret(endpoint_id, request)?
+		client.create_secret(endpoint_id, request)!
 		eprintln('OK')
-		secrets_apply_clean(client, endpoint_id, name_flag, [name])?
+		secrets_apply_clean(client, endpoint_id, name_flag, [name])!
 		print(name)
 		return
 	}
 	eprintln('Secret $name found, nothing to do ... OK')
-	secrets_apply_clean(client, endpoint_id, name_flag, [name])?
+	secrets_apply_clean(client, endpoint_id, name_flag, [name])!
 	print(name)
 }
 
-fn secrets_apply_clean(client api.Service, endpoint_id u32, name string, exclude []string) ? {
-	secrets := client.get_secrets_staled(endpoint_id, label_name, name, exclude)?
+fn secrets_apply_clean(client api.Service, endpoint_id u32, name string, exclude []string) ! {
+	secrets := client.get_secrets_staled(endpoint_id, label_name, name, exclude)!
 	if secrets.len == 0 {
 		return
 	}

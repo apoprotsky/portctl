@@ -15,7 +15,7 @@ const (
 	label_name             = 'portctl.name'
 )
 
-type Command = fn (cli.Command, api.Service, template.Service) ?
+type Command = fn (cli.Command, api.Service, template.Service) !
 
 // get_commands returns array of available commands
 pub fn get_commands() []cli.Command {
@@ -27,7 +27,7 @@ pub fn get_commands() []cli.Command {
 	]
 }
 
-fn command(command cli.Command) ? {
+fn command(command cli.Command) ! {
 	client := api.new(command.flags)
 	parser := template.new(command.flags)
 	commands := {
@@ -47,7 +47,7 @@ fn command(command cli.Command) ? {
 		'stacks update':  stacks_update
 	}
 	func := commands['$command.parent.name $command.name']
-	return func(command, client, parser)
+	func(command, client, parser)!
 }
 
 fn get_default_flag_value(flag string) string {

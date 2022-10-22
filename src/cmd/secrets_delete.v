@@ -4,16 +4,16 @@ import cli
 import src.api
 import src.template
 
-fn secrets_delete(command cli.Command, client api.Service, parser template.Service) ? {
-	endpoint := command.flags.get_string('endpoint')?
-	endpoint_id := client.get_endpoint_id_by_name(endpoint)?
-	name := command.flags.get_string('name')?
+fn secrets_delete(command cli.Command, client api.Service, parser template.Service) ! {
+	endpoint := command.flags.get_string('endpoint')!
+	endpoint_id := client.get_endpoint_id_by_name(endpoint)!
+	name := command.flags.get_string('name')!
 	secret := client.get_secret_by_name(endpoint_id, name) or {
 		eprintln('Secret $name not found, nothing to do ... OK')
 		return
 	}
 	eprint('Secret $name found, deleting ... ')
-	client.delete_secret(endpoint_id, secret.id)?
+	client.delete_secret(endpoint_id, secret.id)!
 	eprintln('OK')
 }
 

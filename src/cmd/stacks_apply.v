@@ -4,15 +4,15 @@ import cli
 import src.api
 import src.template
 
-fn stacks_apply(command cli.Command, client api.Service, parser template.Service) ? {
-	endpoint := command.flags.get_string('endpoint')?
-	endpoint_id := client.get_endpoint_id_by_name(endpoint)?
-	name := command.flags.get_string('name')?
+fn stacks_apply(command cli.Command, client api.Service, parser template.Service) ! {
+	endpoint := command.flags.get_string('endpoint')!
+	endpoint_id := client.get_endpoint_id_by_name(endpoint)!
+	name := command.flags.get_string('name')!
 	client.get_stack(endpoint_id, name) or {
-		stacks_create(command, client, parser)?
+		stacks_create(command, client, parser)!
 		return
 	}
-	stacks_update(command, client, parser)?
+	stacks_update(command, client, parser)!
 }
 
 fn stacks_apply_command() cli.Command {
