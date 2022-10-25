@@ -34,6 +34,12 @@ pub fn (s &Service) get_stack(endpoint_id u32, name string) !entities.Stack {
 	return error('stack not found')
 }
 
+// get_stack_file returns Stack file content by id
+pub fn (s Service) get_stack_file(id u32) !string {
+	result := s.call<Empty, entities.StackFile>('stacks/$id/file', http.Method.get, Empty{})!
+	return result.content
+}
+
 // get_swarm_id returns swarm_id by endpoint_id
 pub fn (s &Service) get_swarm_id(endpoint_id u32) !string {
 	response := s.get_stacks()!

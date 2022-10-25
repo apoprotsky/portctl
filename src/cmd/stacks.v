@@ -17,18 +17,21 @@ fn stacks_command() cli.Command {
 			stacks_delete_command(),
 			stacks_list_command(),
 			stacks_update_command(),
+			stacks_vars_command(),
 		]
 	}
 }
 
 fn get_stacks_name_flag() []cli.Flag {
+	default_stack := get_default_flag_value(env_portainer_stack)
 	return [
 		cli.Flag{
 			flag: .string
 			name: 'name'
 			abbrev: 'n'
 			description: 'Stack name'
-			required: true
+			required: default_stack.len == 0
+			default_value: [default_stack]
 		},
 	]
 }

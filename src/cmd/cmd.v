@@ -10,6 +10,7 @@ const (
 	env_portainer_api      = 'PORTAINER_API'
 	env_portainer_token    = 'PORTAINER_TOKEN'
 	env_portainer_endpoint = 'PORTAINER_ENDPOINT'
+	env_portainer_stack    = 'PORTAINER_STACK'
 	env_vault_addr         = 'VAULT_ADDR'
 	env_vault_token        = 'VAULT_TOKEN'
 	label_name             = 'portctl.name'
@@ -47,6 +48,16 @@ fn command(command cli.Command) ! {
 		'stacks update':  stacks_update
 	}
 	func := commands['$command.parent.name $command.name']
+	func(command, client, parser)!
+}
+
+fn command_l3(command cli.Command) ! {
+	client := api.new(command.flags)
+	parser := template.new(command.flags)
+	commands := {
+		'stacks vars set': stacks_vars_set
+	}
+	func := commands['$command.parent.parent.name $command.parent.name $command.name']
 	func(command, client, parser)!
 }
 
