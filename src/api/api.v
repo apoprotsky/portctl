@@ -24,7 +24,7 @@ pub fn new(flags []cli.Flag) Service {
 }
 
 // call<I, O> sends request to Portainer API endpoint
-pub fn (s &Service) call<I, O>(endpoint string, method http.Method, request I) !O {
+pub fn (s Service) call<I, O>(endpoint string, method http.Method, request I) !O {
 	mut header := http.new_header()
 	header.add_custom('X-API-Key', s.token)!
 	config := http.FetchConfig{

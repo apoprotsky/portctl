@@ -3,7 +3,7 @@ module template
 import os
 import regex
 
-fn (s &Service) parse(data string) !string {
+fn (s Service) parse(data string) !string {
 	mut re := regex.regex_opt('\\{\\{\\s*(env)|(vault)\\s*:\\s*[-_a-zA-Z0-9\\/\\.]+\\s*\\}\\}') or {
 		return error('cannot create regular expression object to parse template')
 	}
@@ -21,6 +21,6 @@ fn (s Service) parse_variables(re regex.RE, data string, start int, end int) str
 	}
 }
 
-fn (s &Service) get_enviroment_variable(name string) string {
+fn (s Service) get_enviroment_variable(name string) string {
 	return os.getenv_opt(name) or { return '' }
 }

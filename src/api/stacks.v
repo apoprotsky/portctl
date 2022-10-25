@@ -19,12 +19,12 @@ pub:
 }
 
 // get_stacks returns array of Stack
-pub fn (s &Service) get_stacks() ![]entities.Stack {
+pub fn (s Service) get_stacks() ![]entities.Stack {
 	return s.call<Empty, []entities.Stack>('stacks', http.Method.get, Empty{})
 }
 
 // get_stack returns Stack by endpoint_id and name
-pub fn (s &Service) get_stack(endpoint_id u32, name string) !entities.Stack {
+pub fn (s Service) get_stack(endpoint_id u32, name string) !entities.Stack {
 	response := s.get_stacks()!
 	for item in response {
 		if item.endpoint_id == endpoint_id && item.name == name {
@@ -41,7 +41,7 @@ pub fn (s Service) get_stack_file(id u32) !string {
 }
 
 // get_swarm_id returns swarm_id by endpoint_id
-pub fn (s &Service) get_swarm_id(endpoint_id u32) !string {
+pub fn (s Service) get_swarm_id(endpoint_id u32) !string {
 	response := s.get_stacks()!
 	for item in response {
 		if item.endpoint_id == endpoint_id {
@@ -52,7 +52,7 @@ pub fn (s &Service) get_swarm_id(endpoint_id u32) !string {
 }
 
 // create_stack creates new stack
-pub fn (s &Service) create_stack(endpoint_id u32, data StackCreateRequest) ! {
+pub fn (s Service) create_stack(endpoint_id u32, data StackCreateRequest) ! {
 	typ := 1 // Swarm stack
 	method := 'string' // Stack data passed as string
 	s.call<StackCreateRequest, Empty>('stacks?type=$typ&method=$method&endpointId=$endpoint_id',
@@ -60,13 +60,13 @@ pub fn (s &Service) create_stack(endpoint_id u32, data StackCreateRequest) ! {
 }
 
 // update_stack updates existing stack
-pub fn (s &Service) update_stack(endpoint_id u32, stack_id u32, data StackUpdateRequest) ! {
+pub fn (s Service) update_stack(endpoint_id u32, stack_id u32, data StackUpdateRequest) ! {
 	s.call<StackUpdateRequest, Empty>('stacks/$stack_id?endpointId=$endpoint_id', http.Method.put,
 		data)!
 }
 
 // delete_stack deletes existing stack
-pub fn (s &Service) delete_stack(endpoint_id u32, stack_id u32) ! {
+pub fn (s Service) delete_stack(endpoint_id u32, stack_id u32) ! {
 	s.call<Empty, Empty>('stacks/$stack_id?endpointId=$endpoint_id', http.Method.delete,
 		Empty{})!
 }
