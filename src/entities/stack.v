@@ -8,28 +8,18 @@ pub:
 
 type StackEnvironment = []StackVariable
 
-// set_variable returns new StackEnvironment with setteled variable
-pub fn (se []StackVariable) set_variable(name string, value string) StackEnvironment {
-	mut exists := false
-	mut result := []StackVariable{}
-	for item in se {
+// update_variable returns new StackEnvironment with updated variable
+pub fn (se []StackVariable) update_variable(name string, value string) StackEnvironment {
+	func := fn [name, value] (item StackVariable) StackVariable {
 		if item.name == name {
-			exists = true
-			result << StackVariable{
+			return StackVariable{
 				name: name
 				value: value
 			}
-		} else {
-			result << item
 		}
+		return item
 	}
-	if !exists {
-		result << StackVariable{
-			name: name
-			value: value
-		}
-	}
-	return result
+	return se.map(func)
 }
 
 pub struct Stack {

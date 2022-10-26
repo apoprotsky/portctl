@@ -55,7 +55,7 @@ fn command_l3(command cli.Command) ! {
 	client := api.new(command.flags)
 	parser := template.new(command.flags)
 	commands := {
-		'stacks vars set': stacks_vars_set
+		'stacks vars update': stacks_vars_update
 	}
 	func := commands['$command.parent.parent.name $command.parent.name $command.name']
 	func(command, client, parser)!

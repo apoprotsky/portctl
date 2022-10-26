@@ -4,7 +4,7 @@ import cli
 import src.api
 import src.template
 
-fn stacks_vars_set(command cli.Command, client api.Service, parser template.Service) ! {
+fn stacks_vars_update(command cli.Command, client api.Service, parser template.Service) ! {
 	endpoint := command.flags.get_string('endpoint')!
 	endpoint_id := client.get_endpoint_id_by_name(endpoint)!
 	name := command.flags.get_string('name')!
@@ -20,7 +20,7 @@ fn stacks_vars_set(command cli.Command, client api.Service, parser template.Serv
 	if value != val {
 		request := api.StackUpdateRequest{
 			stack_file_content: client.get_stack_file(stack.id)!
-			env: stack.env.set_variable(variable, value)
+			env: stack.env.update_variable(variable, value)
 			prune: false
 		}
 		eprint('Stack $name found in endpoint $endpoint, updating variable $variable ... ')
@@ -31,7 +31,7 @@ fn stacks_vars_set(command cli.Command, client api.Service, parser template.Serv
 	}
 }
 
-fn stacks_vars_set_command() cli.Command {
+fn stacks_vars_update_command() cli.Command {
 	mut flags := get_common_flags()
 	flags << get_endpoint_flag()
 	flags << get_stacks_name_flag()
@@ -52,8 +52,8 @@ fn stacks_vars_set_command() cli.Command {
 		},
 	]
 	return cli.Command{
-		name: 'set'
-		description: 'Set value of the stack variable.'
+		name: 'update'
+		description: 'Uopdate value of the stack variable.'
 		execute: command_l3
 		flags: flags
 	}
