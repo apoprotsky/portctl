@@ -35,25 +35,17 @@ fn stacks_vars_update_command() cli.Command {
 	mut flags := get_common_flags()
 	flags << get_endpoint_flag()
 	flags << get_stacks_name_flag()
-	flags << [
-		cli.Flag{
-			flag: .string
-			name: 'variable'
-			abbrev: 'var'
-			description: 'Variable name'
-			required: true
-		},
-		cli.Flag{
-			flag: .string
-			name: 'value'
-			abbrev: 'val'
-			description: 'Variable value'
-			required: true
-		},
-	]
+	flags << get_stacks_variable_flag()
+	flags << cli.Flag{
+		flag: .string
+		name: 'value'
+		abbrev: 'val'
+		description: 'Variable value'
+		required: true
+	}
 	return cli.Command{
 		name: 'update'
-		description: 'Uopdate value of the stack variable.'
+		description: 'Update value of the stack variable.'
 		execute: command_l3
 		flags: flags
 	}

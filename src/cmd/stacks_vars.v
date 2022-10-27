@@ -12,6 +12,7 @@ fn stacks_vars_command() cli.Command {
 		description: 'Manage stack variables.'
 		execute: stacks_vars
 		commands: [
+			stacks_vars_get_command(),
 			stacks_vars_update_command(),
 		]
 	}

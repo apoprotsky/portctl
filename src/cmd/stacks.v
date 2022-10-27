@@ -36,6 +36,18 @@ fn get_stacks_name_flag() []cli.Flag {
 	]
 }
 
+fn get_stacks_variable_flag() []cli.Flag {
+	return [
+		cli.Flag{
+			flag: .string
+			name: 'variable'
+			abbrev: 'var'
+			description: 'Variable name'
+			required: true
+		},
+	]
+}
+
 fn get_stacks_flags() []cli.Flag {
 	mut flags := get_stacks_name_flag()
 	flags << [
