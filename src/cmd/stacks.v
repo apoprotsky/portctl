@@ -48,6 +48,16 @@ fn get_stacks_variable_flag() []cli.Flag {
 	]
 }
 
+fn get_stacks_skip_no_stack_flag() []cli.Flag {
+	return [
+		cli.Flag{
+			flag: .bool
+			name: 'skip-no-stack'
+			description: 'Do not raise error if stack not found'
+		},
+	]
+}
+
 fn get_stacks_flags() []cli.Flag {
 	mut flags := get_stacks_name_flag()
 	flags << [

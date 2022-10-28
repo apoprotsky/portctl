@@ -10,12 +10,18 @@ fn stacks_vars_update(command cli.Command, client api.Service, parser template.S
 	name := command.flags.get_string('name')!
 	variable := command.flags.get_string('variable')!
 	value := command.flags.get_string('value')!
+	skip_no_stack := command.flags.get_bool('skip-no-stack')!
 	stack := client.get_stack(endpoint_id, name) or {
-		return error('stack $name not exists in endpoint $endpoint')
+		message := 'stack $name not found in endpoint $endpoint'
+		if skip_no_stack {
+			eprintln('$message ... SKIP')
+			return
+		}
+		return error(message)
 	}
 	val := stack.get_variable_value(variable)
 	if val == '' {
-		return error('variable $variable not fount in stack $name, endpoint $endpoint')
+		return error('variable $variable not found in stack $name, endpoint $endpoint')
 	}
 	if value != val {
 		request := api.StackUpdateRequest{
@@ -43,6 +49,7 @@ fn stacks_vars_update_command() cli.Command {
 		description: 'Variable value'
 		required: true
 	}
+	flags << get_stacks_skip_no_stack_flag()
 	return cli.Command{
 		name: 'update'
 		description: 'Update value of the stack variable.'
