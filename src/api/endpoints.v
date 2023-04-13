@@ -11,7 +11,7 @@ pub:
 
 // get_endpoints returns array of Endpoint structures
 pub fn (s Service) get_endpoints() ![]Endpoint {
-	return s.call<Empty, []Endpoint>('endpoints', http.Method.get, Empty{})
+	return s.call[Empty, []Endpoint]('endpoints', http.Method.get, Empty{})
 }
 
 // get_endpoint_id_by_name returns ID of endpoint by name

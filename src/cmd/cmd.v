@@ -2,8 +2,8 @@ module cmd
 
 import cli
 import os
-import src.api
-import src.template
+import api
+import template
 
 const (
 	desc_env               = 'Environment variable'
@@ -47,7 +47,7 @@ fn command(command cli.Command) ! {
 		'stacks list':    stacks_list
 		'stacks update':  stacks_update
 	}
-	func := commands['$command.parent.name $command.name']
+	func := commands['${command.parent.name} ${command.name}']
 	func(command, client, parser)!
 }
 
@@ -58,7 +58,7 @@ fn command_l3(command cli.Command) ! {
 		'stacks vars get':    stacks_vars_get
 		'stacks vars update': stacks_vars_update
 	}
-	func := commands['$command.parent.parent.name $command.parent.name $command.name']
+	func := commands['${command.parent.parent.name} ${command.parent.name} ${command.name}']
 	func(command, client, parser)!
 }
 
@@ -75,7 +75,7 @@ fn get_common_flags() []cli.Flag {
 			flag: .string
 			name: 'api'
 			abbrev: 'a'
-			description: 'Portainer base URL\n$cmd.desc_env $cmd.env_portainer_api'
+			description: 'Portainer base URL\n${cmd.desc_env} ${cmd.env_portainer_api}'
 			required: default_api.len == 0
 			default_value: [default_api]
 		},
@@ -83,7 +83,7 @@ fn get_common_flags() []cli.Flag {
 			flag: .string
 			name: 'token'
 			abbrev: 't'
-			description: 'Token to access Portainer API\n$cmd.desc_env $cmd.env_portainer_token'
+			description: 'Token to access Portainer API\n${cmd.desc_env} ${cmd.env_portainer_token}'
 			required: default_token.len == 0
 			default_value: [default_token]
 		},
@@ -97,7 +97,7 @@ fn get_endpoint_flag() []cli.Flag {
 			flag: .string
 			name: 'endpoint'
 			abbrev: 'e'
-			description: 'Name of Portainrt endpoint\n$cmd.desc_env $cmd.env_portainer_endpoint'
+			description: 'Name of Portainrt endpoint\n${cmd.desc_env} ${cmd.env_portainer_endpoint}'
 			required: default_endpoint.len == 0
 			default_value: [default_endpoint]
 		},
@@ -112,14 +112,14 @@ fn get_vault_flags() []cli.Flag {
 			flag: .string
 			name: 'vault-addr'
 			abbrev: 'va'
-			description: 'Hashicorp Vault server address\n$cmd.desc_env $cmd.env_vault_addr'
+			description: 'Hashicorp Vault server address\n${cmd.desc_env} ${cmd.env_vault_addr}'
 			default_value: [default_addr]
 		},
 		cli.Flag{
 			flag: .string
 			name: 'vault-token'
 			abbrev: 'vt'
-			description: 'Hashicorp Vault token\n$cmd.desc_env $cmd.env_vault_token'
+			description: 'Hashicorp Vault token\n${cmd.desc_env} ${cmd.env_vault_token}'
 			required: default_token.len == 0 && default_addr.len > 0
 			default_value: [default_token]
 		},

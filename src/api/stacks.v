@@ -1,7 +1,7 @@
 module api
 
 import net.http
-import src.entities
+import entities
 
 pub struct StackCreateRequest {
 pub:
@@ -20,7 +20,7 @@ pub:
 
 // get_stacks returns array of Stack
 pub fn (s Service) get_stacks() ![]entities.Stack {
-	return s.call<Empty, []entities.Stack>('stacks', http.Method.get, Empty{})
+	return s.call[Empty, []entities.Stack]('stacks', http.Method.get, Empty{})
 }
 
 // get_stack returns Stack by endpoint_id and name
@@ -36,7 +36,8 @@ pub fn (s Service) get_stack(endpoint_id u32, name string) !entities.Stack {
 
 // get_stack_file returns Stack file content by id
 pub fn (s Service) get_stack_file(id u32) !string {
-	result := s.call<Empty, entities.StackFile>('stacks/$id/file', http.Method.get, Empty{})!
+	result := s.call[Empty, entities.StackFile]('stacks/${id}/file', http.Method.get,
+		Empty{})!
 	return result.content
 }
 
@@ -55,18 +56,18 @@ pub fn (s Service) get_swarm_id(endpoint_id u32) !string {
 pub fn (s Service) create_stack(endpoint_id u32, data StackCreateRequest) ! {
 	typ := 1 // Swarm stack
 	method := 'string' // Stack data passed as string
-	s.call<StackCreateRequest, Empty>('stacks?type=$typ&method=$method&endpointId=$endpoint_id',
+	s.call[StackCreateRequest, Empty]('stacks?type=${typ}&method=${method}&endpointId=${endpoint_id}',
 		http.Method.post, data)!
 }
 
 // update_stack updates existing stack
 pub fn (s Service) update_stack(endpoint_id u32, stack_id u32, data StackUpdateRequest) ! {
-	s.call<StackUpdateRequest, Empty>('stacks/$stack_id?endpointId=$endpoint_id', http.Method.put,
-		data)!
+	s.call[StackUpdateRequest, Empty]('stacks/${stack_id}?endpointId=${endpoint_id}',
+		http.Method.put, data)!
 }
 
 // delete_stack deletes existing stack
 pub fn (s Service) delete_stack(endpoint_id u32, stack_id u32) ! {
-	s.call<Empty, Empty>('stacks/$stack_id?endpointId=$endpoint_id', http.Method.delete,
+	s.call[Empty, Empty]('stacks/${stack_id}?endpointId=${endpoint_id}', http.Method.delete,
 		Empty{})!
 }

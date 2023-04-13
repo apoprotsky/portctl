@@ -2,8 +2,8 @@ module cmd
 
 import cli
 import encoding.base64
-import src.api
-import src.template
+import api
+import template
 
 fn secrets_create(command cli.Command, client api.Service, parser template.Service) ! {
 	endpoint := command.flags.get_string('endpoint')!
@@ -21,13 +21,13 @@ fn secrets_create(command cli.Command, client api.Service, parser template.Servi
 			}
 			data: data
 		}
-		eprint('Secret $name not found, creating ... ')
+		eprint('Secret ${name} not found, creating ... ')
 		client.create_secret(endpoint_id, request)!
 		eprintln('OK')
 		print(name)
 		return
 	}
-	return error('secret $name already exists')
+	return error('secret ${name} already exists')
 }
 
 fn secrets_create_command() cli.Command {

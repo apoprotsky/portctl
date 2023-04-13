@@ -3,8 +3,8 @@ module cmd
 import cli
 import encoding.base64
 import net.http
-import src.api
-import src.template
+import api
+import template
 
 fn secrets_apply(command cli.Command, client api.Service, parser template.Service) ! {
 	endpoint := command.flags.get_string('endpoint')!
@@ -22,14 +22,14 @@ fn secrets_apply(command cli.Command, client api.Service, parser template.Servic
 			}
 			data: data
 		}
-		eprint('Secret $name not found, creating ... ')
+		eprint('Secret ${name} not found, creating ... ')
 		client.create_secret(endpoint_id, request)!
 		eprintln('OK')
 		secrets_apply_clean(client, endpoint_id, name_flag, [name])!
 		print(name)
 		return
 	}
-	eprintln('Secret $name found, nothing to do ... OK')
+	eprintln('Secret ${name} found, nothing to do ... OK')
 	secrets_apply_clean(client, endpoint_id, name_flag, [name])!
 	print(name)
 }
@@ -40,7 +40,7 @@ fn secrets_apply_clean(client api.Service, endpoint_id u32, name string, exclude
 		return
 	}
 	for secret in secrets {
-		eprint('Delete old secret $secret.spec.name ... ')
+		eprint('Delete old secret ${secret.spec.name} ... ')
 		mut result := 'OK'
 		client.delete_secret(endpoint_id, secret.id) or {
 			result = if err.code() == http.Status.bad_request.int() {

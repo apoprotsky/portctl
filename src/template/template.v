@@ -17,7 +17,7 @@ pub struct Service {
 // parse_file parses template ini file to string
 pub fn (s Service) parse_file(file string) !string {
 	if !os.exists(file) {
-		return error('file $file not exists')
+		return error('file ${file} not exists')
 	}
 	data := os.read_file(file)!
 	return s.parse(data)

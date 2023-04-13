@@ -3,8 +3,8 @@ module cmd
 import cli
 import encoding.base64
 import net.http
-import src.api
-import src.template
+import api
+import template
 
 fn configs_apply(command cli.Command, client api.Service, parser template.Service) ! {
 	endpoint := command.flags.get_string('endpoint')!
@@ -22,7 +22,7 @@ fn configs_apply(command cli.Command, client api.Service, parser template.Servic
 			}
 			data: data
 		}
-		eprint('Config $name not found, creating ... ')
+		eprint('Config ${name} not found, creating ... ')
 		client.create_config(endpoint_id, request)!
 		eprintln('OK')
 		configs_apply_clean(client, endpoint_id, name_flag, [name])!
@@ -30,9 +30,9 @@ fn configs_apply(command cli.Command, client api.Service, parser template.Servic
 		return
 	}
 	if config.spec.data != data {
-		return error('config name $name does not match content')
+		return error('config name ${name} does not match content')
 	}
-	eprintln('Config $name found, nothing to do ... OK')
+	eprintln('Config ${name} found, nothing to do ... OK')
 	configs_apply_clean(client, endpoint_id, name_flag, [name])!
 	print(name)
 }
@@ -43,7 +43,7 @@ fn configs_apply_clean(client api.Service, endpoint_id u32, name string, exclude
 		return
 	}
 	for config in configs {
-		eprint('Delete old config $config.spec.name ... ')
+		eprint('Delete old config ${config.spec.name} ... ')
 		mut result := 'OK'
 		client.delete_config(endpoint_id, config.id) or {
 			result = if err.code() == http.Status.bad_request.int() {

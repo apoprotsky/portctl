@@ -2,8 +2,8 @@ module cmd
 
 import cli
 import net.http
-import src.api
-import src.template
+import api
+import template
 
 struct SecretSpec {
 	name string [json: Name]
@@ -17,14 +17,14 @@ pub struct Secret {
 fn secrets_list(command cli.Command, client api.Service, parser template.Service) ! {
 	endpoint := command.flags.get_string('endpoint')!
 	endpoint_id := client.get_endpoint_id_by_name(endpoint)!
-	response := client.call<api.Empty, []Secret>('endpoints/$endpoint_id/docker/secrets',
+	response := client.call[api.Empty, []Secret]('endpoints/${endpoint_id}/docker/secrets',
 		http.Method.get, api.Empty{}) or {
 		eprintln(err.msg())
 		exit(1)
 	}
 	println('${'ID':-30}${'NAME'}')
 	for item in response {
-		println('${item.id:-30}$item.spec.name')
+		println('${item.id:-30}${item.spec.name}')
 	}
 }
 

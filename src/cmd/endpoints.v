@@ -2,7 +2,7 @@ module cmd
 
 import cli
 
-fn endpoints(command cli.Command) {
+fn endpoints(command cli.Command) ! {
 	command.execute_help()
 }
 

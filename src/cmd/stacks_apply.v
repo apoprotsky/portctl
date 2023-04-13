@@ -1,8 +1,8 @@
 module cmd
 
 import cli
-import src.api
-import src.template
+import api
+import template
 
 fn stacks_apply(command cli.Command, client api.Service, parser template.Service) ! {
 	endpoint := command.flags.get_string('endpoint')!

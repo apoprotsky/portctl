@@ -1,18 +1,18 @@
 module cmd
 
 import cli
-import src.api
-import src.template
+import api
+import template
 
 fn configs_delete(command cli.Command, client api.Service, parser template.Service) ! {
 	endpoint := command.flags.get_string('endpoint')!
 	endpoint_id := client.get_endpoint_id_by_name(endpoint)!
 	name := command.flags.get_string('name')!
 	config := client.get_config(endpoint_id, name) or {
-		eprintln('Config $name not found, nothing to do ... OK')
+		eprintln('Config ${name} not found, nothing to do ... OK')
 		return
 	}
-	eprint('Config $name found, deleting ... ')
+	eprint('Config ${name} found, deleting ... ')
 	client.delete_config(endpoint_id, config.id)!
 	eprintln('OK')
 }

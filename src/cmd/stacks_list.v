@@ -1,14 +1,14 @@
 module cmd
 
 import cli
-import src.api
-import src.template
+import api
+import template
 
 fn stacks_list(command cli.Command, client api.Service, parser template.Service) ! {
 	response := client.get_stacks()!
 	println('${'ID':-5}${'ENDPOINT_ID':-12}${'SWARM_ID':-27}${'NAME'}')
 	for item in response {
-		println('${item.id:-5}${item.endpoint_id:-12}${item.swarm_id:-27}$item.name')
+		println('${item.id:-5}${item.endpoint_id:-12}${item.swarm_id:-27}${item.name}')
 	}
 }
 

@@ -2,9 +2,9 @@ module cmd
 
 import cli
 import os
-import src.api
-import src.entities
-import src.template
+import api
+import entities
+import template
 
 fn stacks_create(command cli.Command, client api.Service, parser template.Service) ! {
 	endpoint := command.flags.get_string('endpoint')!
@@ -13,7 +13,7 @@ fn stacks_create(command cli.Command, client api.Service, parser template.Servic
 	swarm_id := client.get_swarm_id(endpoint_id)!
 	file := command.flags.get_string('file')!
 	if !os.exists(file) {
-		return error('file $file not exists')
+		return error('file ${file} not exists')
 	}
 	content := os.read_file(file)!
 	vars := command.flags.get_string('vars')!
@@ -33,12 +33,12 @@ fn stacks_create(command cli.Command, client api.Service, parser template.Servic
 			stack_file_content: content
 			env: env
 		}
-		eprint('Stack $name not found in endpoint $endpoint, creating ... ')
+		eprint('Stack ${name} not found in endpoint ${endpoint}, creating ... ')
 		client.create_stack(endpoint_id, request)!
 		eprintln('OK')
 		return
 	}
-	return error('stack $name already exists in endpoint $endpoint')
+	return error('stack ${name} already exists in endpoint ${endpoint}')
 }
 
 fn stacks_create_command() cli.Command {

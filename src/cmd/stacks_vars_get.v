@@ -1,8 +1,8 @@
 module cmd
 
 import cli
-import src.api
-import src.template
+import api
+import template
 
 fn stacks_vars_get(command cli.Command, client api.Service, parser template.Service) ! {
 	endpoint := command.flags.get_string('endpoint')!
@@ -11,16 +11,16 @@ fn stacks_vars_get(command cli.Command, client api.Service, parser template.Serv
 	variable := command.flags.get_string('variable')!
 	skip_no_stack := command.flags.get_bool('skip-no-stack')!
 	stack := client.get_stack(endpoint_id, name) or {
-		message := 'stack $name not found in endpoint $endpoint'
+		message := 'stack ${name} not found in endpoint ${endpoint}'
 		if skip_no_stack {
-			eprintln('$message ... SKIP')
+			eprintln('${message} ... SKIP')
 			return
 		}
 		return error(message)
 	}
 	val := stack.get_variable_value(variable)
 	if val == '' {
-		return error('variable $variable not found in stack $name, endpoint $endpoint')
+		return error('variable ${variable} not found in stack ${name}, endpoint ${endpoint}')
 	}
 	print(val)
 }

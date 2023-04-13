@@ -16,12 +16,12 @@ fn (s Service) get_vault_variable(name string) string {
 	vault_token := s.get_flag('vault-token')
 	parts := name.split('.')
 	if parts.len < 2 {
-		eprintln('Field name of Vault secret is not specified: $name')
+		eprintln('Field name of Vault secret is not specified: ${name}')
 		exit(1)
 	}
 	path := parts[0].replace_once('/', '/data/')
 	field := parts[1]
-	url := '$vault_addr/v1/$path'
+	url := '${vault_addr}/v1/${path}'
 	mut header := http.new_header()
 	header.add_custom('X-Vault-Token', vault_token) or {
 		eprintln(err.msg())
@@ -43,11 +43,11 @@ fn (s Service) get_vault_variable(name string) string {
 			exit(1)
 		}
 		value := response.data.data[field] or {
-			eprintln('Field $field not found in Vault secret ${parts[0]}')
+			eprintln('Field ${field} not found in Vault secret ${parts[0]}')
 			exit(1)
 		}
 		return value
 	}
-	eprintln('Error in Vault API call for $name: $result.status_code $result.status_msg\nResponse: $result.body')
+	eprintln('Error in Vault API call for ${name}: ${result.status_code} ${result.status_msg}\nResponse: ${result.body}')
 	exit(1)
 }

@@ -1,8 +1,8 @@
 module cmd
 
 import cli
-import src.api
-import src.template
+import api
+import template
 
 fn stacks_vars_update(command cli.Command, client api.Service, parser template.Service) ! {
 	endpoint := command.flags.get_string('endpoint')!
@@ -12,16 +12,16 @@ fn stacks_vars_update(command cli.Command, client api.Service, parser template.S
 	value := command.flags.get_string('value')!
 	skip_no_stack := command.flags.get_bool('skip-no-stack')!
 	stack := client.get_stack(endpoint_id, name) or {
-		message := 'stack $name not found in endpoint $endpoint'
+		message := 'stack ${name} not found in endpoint ${endpoint}'
 		if skip_no_stack {
-			eprintln('$message ... SKIP')
+			eprintln('${message} ... SKIP')
 			return
 		}
 		return error(message)
 	}
 	val := stack.get_variable_value(variable)
 	if val == '' {
-		return error('variable $variable not found in stack $name, endpoint $endpoint')
+		return error('variable ${variable} not found in stack ${name}, endpoint ${endpoint}')
 	}
 	if value != val {
 		request := api.StackUpdateRequest{
@@ -29,11 +29,11 @@ fn stacks_vars_update(command cli.Command, client api.Service, parser template.S
 			env: stack.env.update_variable(variable, value)
 			prune: false
 		}
-		eprint('Stack $name found in endpoint $endpoint, updating variable $variable ... ')
+		eprint('Stack ${name} found in endpoint ${endpoint}, updating variable ${variable} ... ')
 		client.update_stack(endpoint_id, stack.id, request)!
 		eprintln('OK')
 	} else {
-		eprintln('Variable $variable in stack $name, endpoint $endpoint already has value $value, nothing to do ... OK')
+		eprintln('Variable ${variable} in stack ${name}, endpoint ${endpoint} already has value ${value}, nothing to do ... OK')
 	}
 }
 

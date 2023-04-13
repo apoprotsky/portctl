@@ -2,7 +2,7 @@ module cmd
 
 import cli
 
-fn secrets(command cli.Command) {
+fn secrets(command cli.Command) ! {
 	command.execute_help()
 }
 

@@ -2,9 +2,9 @@ module cmd
 
 import cli
 import os
-import src.api
-import src.entities
-import src.template
+import api
+import entities
+import template
 
 fn stacks_update(command cli.Command, client api.Service, parser template.Service) ! {
 	endpoint := command.flags.get_string('endpoint')!
@@ -12,7 +12,7 @@ fn stacks_update(command cli.Command, client api.Service, parser template.Servic
 	name := command.flags.get_string('name')!
 	file := command.flags.get_string('file')!
 	if !os.exists(file) {
-		return error('file $file not exists')
+		return error('file ${file} not exists')
 	}
 	content := os.read_file(file)!
 	vars := command.flags.get_string('vars')!
@@ -27,14 +27,14 @@ fn stacks_update(command cli.Command, client api.Service, parser template.Servic
 	}
 	prune := command.flags.get_bool('prune')!
 	stack := client.get_stack(endpoint_id, name) or {
-		return error('stack $name not exists in endpoint $endpoint')
+		return error('stack ${name} not exists in endpoint ${endpoint}')
 	}
 	request := api.StackUpdateRequest{
 		stack_file_content: content
 		env: env
 		prune: prune
 	}
-	eprint('Stack $name found in endpoint $endpoint, updating ... ')
+	eprint('Stack ${name} found in endpoint ${endpoint}, updating ... ')
 	client.update_stack(endpoint_id, stack.id, request)!
 	eprintln('OK')
 }

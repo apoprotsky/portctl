@@ -2,7 +2,7 @@ module cmd
 
 import cli
 
-fn stacks_vars(command cli.Command) {
+fn stacks_vars(command cli.Command) ! {
 	command.execute_help()
 }
 

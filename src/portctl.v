@@ -2,7 +2,7 @@ module main
 
 import cli
 import os
-import src.cmd
+import cmd
 
 fn main() {
 	mut app := cli.Command{

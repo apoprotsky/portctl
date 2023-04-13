@@ -2,8 +2,8 @@ module cmd
 
 import cli
 import encoding.base64
-import src.api
-import src.template
+import api
+import template
 
 fn configs_create(command cli.Command, client api.Service, parser template.Service) ! {
 	endpoint := command.flags.get_string('endpoint')!
@@ -21,7 +21,7 @@ fn configs_create(command cli.Command, client api.Service, parser template.Servi
 			}
 			data: data
 		}
-		eprint('Config $name not found, creating ... ')
+		eprint('Config ${name} not found, creating ... ')
 		client.create_config(endpoint_id, request)!
 		eprintln('OK')
 		print(name)
@@ -30,7 +30,7 @@ fn configs_create(command cli.Command, client api.Service, parser template.Servi
 	if config.spec.data != data {
 		return error('config name does not match content')
 	}
-	return error('config $name already exists')
+	return error('config ${name} already exists')
 }
 
 fn configs_create_command() cli.Command {

@@ -1,8 +1,8 @@
 module cmd
 
 import cli
-import src.api
-import src.template
+import api
+import template
 
 fn endpoints_list(command cli.Command, client api.Service, parser template.Service) ! {
 	response := client.get_endpoints()!
