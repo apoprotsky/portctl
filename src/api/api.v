@@ -23,12 +23,13 @@ pub fn new(flags []cli.Flag) Service {
 	}
 }
 
-// call<I, O> sends request to Portainer API endpoint
-pub fn (s Service) call<I, O>(endpoint string, method http.Method, request I) !O {
+// call[I, O] sends request to Portainer API endpoint
+pub fn (s Service) call[I, O](endpoint string, method http.Method, request I) !O {
 	mut header := http.new_header()
+	header.add(http.CommonHeader.content_type, 'application/json')
 	header.add_custom('X-API-Key', s.token)!
 	config := http.FetchConfig{
-		url: '$s.api/$endpoint'
+		url: '${s.api}/${endpoint}'
 		method: method
 		header: header
 		data: json.encode(request)
@@ -39,7 +40,7 @@ pub fn (s Service) call<I, O>(endpoint string, method http.Method, request I) !O
 	match result.status_code {
 		status_ok {
 			response := json.decode(O, result.body) or {
-				return error('Error in API call: cannot decode result: $err.msg()')
+				return error('Error in API call: cannot decode result: ${err.msg()}')
 			}
 			return response
 		}
@@ -47,7 +48,7 @@ pub fn (s Service) call<I, O>(endpoint string, method http.Method, request I) !O
 			return O{}
 		}
 		else {
-			return error_with_code('Error in API call: $result.status_code $result.status_msg\nResponse: $result.body',
+			return error_with_code('Error in API call: ${result.status_code} ${result.status_msg}\nResponse: ${result.body}',
 				result.status_code)
 		}
 	}
