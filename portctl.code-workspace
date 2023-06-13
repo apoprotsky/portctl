@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+	],
+	"extensions": {
+		"recommendations": [
+			"vlanguage.vscode-vlang"
+		]
+	},
+	"settings": {
+		"editor.formatOnSave": true,
+	}
+}
