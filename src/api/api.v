@@ -5,6 +5,7 @@ import crypto.md5
 import encoding.base58
 import json
 import net.http
+import time
 
 pub struct Empty {}
 
@@ -34,24 +35,36 @@ pub fn (s Service) call[I, O](endpoint string, method http.Method, request I) !O
 		header: header
 		data: json.encode(request)
 	}
-	result := http.fetch(config)!
 	status_ok := http.Status.ok.int()
 	status_no_content := http.Status.no_content.int()
-	match result.status_code {
-		status_ok {
-			response := json.decode(O, result.body) or {
-				return error('Error in API call: cannot decode result: ${err.msg()}')
+	mut result := http.Response{}
+	mut count := 0
+	for count < 5 {
+		result = http.fetch(config)!
+		if result.status_code == http.Status.bad_gateway.int()
+			&& endpoint.ends_with('/docker/configs') {
+			count++
+			eprintln('Error in API call: ${method} ${s.api}/${endpoint}, status code ${result.status_code}, will try again in ${count} sec')
+			time.sleep(count * time.second)
+			continue
+		}
+		match result.status_code {
+			status_ok {
+				response := json.decode(O, result.body) or {
+					return error('Error in API call: cannot decode result: ${err.msg()}')
+				}
+				return response
 			}
-			return response
-		}
-		status_no_content {
-			return O{}
-		}
-		else {
-			return error_with_code('Error in API call: ${result.status_code} ${result.status_msg}\nResponse: ${result.body}',
-				result.status_code)
+			status_no_content {
+				return O{}
+			}
+			else {
+				break
+			}
 		}
 	}
+	return error_with_code('Error in API call: ${result.status_code} ${result.status_msg}\nResponse: ${result.body}',
+		result.status_code)
 }
 
 // get_postfix returns postfix base on data
