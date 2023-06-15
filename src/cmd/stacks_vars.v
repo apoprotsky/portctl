@@ -9,7 +9,7 @@ fn stacks_vars(command cli.Command) ! {
 fn stacks_vars_command() cli.Command {
 	return cli.Command{
 		name: 'vars'
-		description: 'Manage stack variables.'
+		description: 'Manage stack variables'
 		execute: stacks_vars
 		commands: [
 			stacks_vars_get_command(),

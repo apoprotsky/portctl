@@ -16,7 +16,7 @@ fn endpoints_list_command() cli.Command {
 	flags := get_common_flags()
 	return cli.Command{
 		name: 'list'
-		description: 'List endpoints.'
+		description: 'List endpoints'
 		execute: command
 		flags: flags
 	}

@@ -53,7 +53,7 @@ fn stacks_update_command() cli.Command {
 	}
 	return cli.Command{
 		name: 'update'
-		description: 'Update stack.'
+		description: 'Update stack'
 		execute: command
 		flags: flags
 	}

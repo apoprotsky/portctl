@@ -19,7 +19,7 @@ fn configs_list_command() cli.Command {
 	flags << get_endpoint_flag()
 	return cli.Command{
 		name: 'list'
-		description: 'List configs.'
+		description: 'List configs'
 		execute: command
 		flags: flags
 	}

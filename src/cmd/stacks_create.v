@@ -48,7 +48,7 @@ fn stacks_create_command() cli.Command {
 	flags << get_stacks_flags()
 	return cli.Command{
 		name: 'create'
-		description: 'Create stack.'
+		description: 'Create stack'
 		execute: command
 		flags: flags
 	}

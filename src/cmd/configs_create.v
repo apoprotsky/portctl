@@ -40,7 +40,7 @@ fn configs_create_command() cli.Command {
 	flags << get_configs_flags()
 	return cli.Command{
 		name: 'create'
-		description: 'Create config.'
+		description: 'Create config'
 		execute: command
 		flags: flags
 	}

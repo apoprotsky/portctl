@@ -9,7 +9,7 @@ fn stacks(command cli.Command) ! {
 fn stacks_command() cli.Command {
 	return cli.Command{
 		name: 'stacks'
-		description: 'Stacks management.'
+		description: 'Stacks management'
 		execute: stacks
 		commands: [
 			stacks_apply_command(),

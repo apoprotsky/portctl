@@ -33,7 +33,7 @@ fn secrets_list_command() cli.Command {
 	flags << get_endpoint_flag()
 	return cli.Command{
 		name: 'list'
-		description: 'List secrets.'
+		description: 'List secrets'
 		execute: command
 		flags: flags
 	}

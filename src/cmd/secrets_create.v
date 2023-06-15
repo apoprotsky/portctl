@@ -37,7 +37,7 @@ fn secrets_create_command() cli.Command {
 	flags << get_secrets_flags()
 	return cli.Command{
 		name: 'create'
-		description: 'Create secret.'
+		description: 'Create secret'
 		execute: command
 		flags: flags
 	}

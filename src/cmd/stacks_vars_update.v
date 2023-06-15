@@ -52,7 +52,7 @@ fn stacks_vars_update_command() cli.Command {
 	flags << get_stacks_skip_no_stack_flag()
 	return cli.Command{
 		name: 'update'
-		description: 'Update value of the stack variable.'
+		description: 'Update value of the stack variable'
 		execute: command_l3
 		flags: flags
 	}

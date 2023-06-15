@@ -9,7 +9,7 @@ fn configs(command cli.Command) ! {
 fn configs_command() cli.Command {
 	return cli.Command{
 		name: 'configs'
-		description: 'Configs management.'
+		description: 'Configs management'
 		execute: configs
 		commands: [
 			configs_apply_command(),

@@ -29,7 +29,7 @@ fn stacks_apply_command() cli.Command {
 	}
 	return cli.Command{
 		name: 'apply'
-		description: 'Create or upate stack.'
+		description: 'Create or upate stack'
 		execute: command
 		flags: flags
 	}

@@ -9,7 +9,7 @@ fn endpoints(command cli.Command) ! {
 fn endpoints_command() cli.Command {
 	return cli.Command{
 		name: 'endpoints'
-		description: 'Endpoints management.'
+		description: 'Endpoints management'
 		execute: endpoints
 		commands: [
 			endpoints_list_command(),

@@ -60,7 +60,7 @@ fn secrets_apply_command() cli.Command {
 	flags << get_secrets_flags()
 	return cli.Command{
 		name: 'apply'
-		description: 'Create secret.'
+		description: 'Create secret'
 		execute: command
 		flags: flags
 	}

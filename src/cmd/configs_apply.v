@@ -63,7 +63,7 @@ fn configs_apply_command() cli.Command {
 	flags << get_configs_flags()
 	return cli.Command{
 		name: 'apply'
-		description: 'Create config.'
+		description: 'Create config'
 		execute: command
 		flags: flags
 	}

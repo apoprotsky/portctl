@@ -23,7 +23,7 @@ fn stacks_delete_command() cli.Command {
 	flags << get_stacks_name_flag()
 	return cli.Command{
 		name: 'delete'
-		description: 'Delete stack.'
+		description: 'Delete stack'
 		execute: command
 		flags: flags
 	}

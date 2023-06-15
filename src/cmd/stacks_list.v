@@ -16,7 +16,7 @@ fn stacks_list_command() cli.Command {
 	mut flags := get_common_flags()
 	return cli.Command{
 		name: 'list'
-		description: 'List stacks.'
+		description: 'List stacks'
 		execute: command
 		flags: flags
 	}

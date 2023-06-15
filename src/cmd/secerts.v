@@ -9,7 +9,7 @@ fn secrets(command cli.Command) ! {
 fn secrets_command() cli.Command {
 	return cli.Command{
 		name: 'secrets'
-		description: 'Secrets management.'
+		description: 'Secrets management'
 		execute: secrets
 		commands: [
 			secrets_apply_command(),
