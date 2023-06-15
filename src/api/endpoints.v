@@ -1,17 +1,11 @@
 module api
 
+import entities
 import net.http
 
-struct Endpoint {
-pub:
-	id   u32    [json: Id]
-	name string [json: Name]
-	url  string [json: URL]
-}
-
 // get_endpoints returns array of Endpoint structures
-pub fn (s Service) get_endpoints() ![]Endpoint {
-	return s.call[Empty, []Endpoint]('endpoints', http.Method.get, Empty{})
+pub fn (s Service) get_endpoints() ![]entities.Endpoint {
+	return s.call[Empty, []entities.Endpoint]('endpoints', http.Method.get, Empty{})
 }
 
 // get_endpoint_id_by_name returns ID of endpoint by name
