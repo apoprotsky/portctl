@@ -6,14 +6,16 @@ import api
 import template
 
 const (
-	desc_env               = 'Environment variable'
-	env_portainer_api      = 'PORTAINER_API'
-	env_portainer_token    = 'PORTAINER_TOKEN'
-	env_portainer_endpoint = 'PORTAINER_ENDPOINT'
-	env_portainer_stack    = 'PORTAINER_STACK'
-	env_vault_addr         = 'VAULT_ADDR'
-	env_vault_token        = 'VAULT_TOKEN'
-	label_name             = 'portctl.name'
+	desc_env                  = 'Environment variable'
+	default_portainer_retries = 60
+	env_portainer_api         = 'PORTAINER_API'
+	env_portainer_endpoint    = 'PORTAINER_ENDPOINT'
+	env_portainer_retries     = 'PORTAINER_RETRIES'
+	env_portainer_stack       = 'PORTAINER_STACK'
+	env_portainer_token       = 'PORTAINER_TOKEN'
+	env_vault_addr            = 'VAULT_ADDR'
+	env_vault_token           = 'VAULT_TOKEN'
+	label_name                = 'portctl.name'
 )
 
 type Command = fn (cli.Command, api.Service, template.Service) !
@@ -68,7 +70,9 @@ fn get_default_flag_value(flag string) string {
 }
 
 fn get_common_flags() []cli.Flag {
+	env_retries := get_default_flag_value(cmd.env_portainer_retries).u8()
 	default_api := get_default_flag_value(cmd.env_portainer_api)
+	default_retries := if env_retries > 0 { env_retries } else { cmd.default_portainer_retries }
 	default_token := get_default_flag_value(cmd.env_portainer_token)
 	return [
 		cli.Flag{
@@ -78,6 +82,15 @@ fn get_common_flags() []cli.Flag {
 			description: 'Portainer base URL\n${cmd.desc_env} ${cmd.env_portainer_api}'
 			required: default_api.len == 0
 			default_value: [default_api]
+		},
+		cli.Flag{
+			flag: .int
+			name: 'retries'
+			abbrev: 'r'
+			description: 'Number of retry calls of Portainer API\n${cmd.desc_env} ${cmd.env_portainer_retries}'
+			required: false
+			default_value: [default_retries.str()]
+			global: true
 		},
 		cli.Flag{
 			flag: .string

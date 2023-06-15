@@ -10,16 +10,19 @@ import time
 pub struct Empty {}
 
 pub struct Service {
-	api   string = 'http://127.0.0.1:9000'
-	token string
+	api     string = 'http://127.0.0.1:9000'
+	retries int
+	token   string
 }
 
 // new returns instance of Portainer API service
 pub fn new(flags []cli.Flag) Service {
 	api := flags.get_string('api') or { panic(err) }
+	retries := flags.get_int('retries') or { panic(err) }
 	token := flags.get_string('token') or { panic(err) }
 	return Service{
 		api: api + '/api'
+		retries: retries
 		token: token
 	}
 }
@@ -39,19 +42,29 @@ pub fn (s Service) call[I, O](endpoint string, method http.Method, request I) !O
 	status_no_content := http.Status.no_content.int()
 	mut result := http.Response{}
 	mut count := 0
-	for count < 5 {
+	mut retry := false
+	for count < s.retries {
 		result = http.fetch(config)!
-		if result.status_code == http.Status.bad_gateway.int()
+		retry = false
+		if result.status_code == http.Status.bad_gateway.int() && method == http.Method.get
 			&& endpoint.ends_with('/docker/configs') {
+			retry = true
+		}
+		if result.status_code == http.Status.internal_server_error.int()
+			&& method == http.Method.put && endpoint.starts_with('stacks/')
+			&& result.body.contains('rpc error: code = Unknown desc = update out of sequence') {
+			retry = true
+		}
+		if retry {
 			count++
-			eprintln('Error in API call: ${method} ${s.api}/${endpoint}, status code ${result.status_code}, will try again in ${count} sec')
+			eprintln('Error ${result.status_code} ${result.status_msg} in API call ${method} ${s.api}/${endpoint}: will try again in ${count} sec')
 			time.sleep(count * time.second)
 			continue
 		}
 		match result.status_code {
 			status_ok {
 				response := json.decode(O, result.body) or {
-					return error('Error in API call: cannot decode result: ${err.msg()}')
+					return error('Error in API call ${method} ${s.api}/${endpoint}: cannot decode result: ${err.msg()}')
 				}
 				return response
 			}
@@ -63,7 +76,7 @@ pub fn (s Service) call[I, O](endpoint string, method http.Method, request I) !O
 			}
 		}
 	}
-	return error_with_code('Error in API call: ${result.status_code} ${result.status_msg}\nResponse: ${result.body}',
+	return error_with_code('Error ${result.status_code} ${result.status_msg} in API call ${method} ${s.api}/${endpoint}\nResponse: ${result.body}',
 		result.status_code)
 }
 
