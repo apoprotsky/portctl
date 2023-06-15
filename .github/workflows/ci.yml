@@ -12,7 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Install V
-        uses: vlang/setup-v@v1
+        uses: vlang/setup-v@v1.3
         with:
           check-latest: true
       - name: Checkout ${{ github.event.repository.name }}
