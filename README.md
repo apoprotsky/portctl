@@ -1,4 +1,4 @@
-`portctl` (`Port`ainer `C`on`t`ro`l`) is a command line interface tool for managing resources in `Portainer`
+`portctl` (`Port`ainer `C`on`t`ro`l`) is a command line interface tool for managing `Docker Swarm` resources through `Portainer API` integrated with `Hashicorp Vault`
 
 # How to use
 
@@ -88,7 +88,7 @@ Noticeable:
 - Apply commands try to delete staled `Docker Swarm` configs and secrets. Configs and secrets consider as staled if its name is not equal current and resource are below first [TaskHistoryRetentionLimit](https://docs.docker.com/engine/reference/commandline/swarm_init/#--task-history-limit) items in list ordered by date.
 
 List:
-- `Portainer` endpoints, stacks for `Docker Swarm`
+- `Portainer` endpoints, services, stacks for `Docker Swarm`
 - `Docker Swarm` configs, secrets
 
 Create:

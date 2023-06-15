@@ -26,6 +26,7 @@ pub fn get_commands() []cli.Command {
 		configs_command(),
 		endpoints_command(),
 		secrets_command(),
+		services_command(),
 		stacks_command(),
 	]
 }
@@ -43,6 +44,7 @@ fn command(command cli.Command) ! {
 		'secrets create': secrets_create
 		'secrets delete': secrets_delete
 		'secrets list':   secrets_list
+		'services list':  services_list
 		'stacks apply':   stacks_apply
 		'stacks create':  stacks_create
 		'stacks delete':  stacks_delete
