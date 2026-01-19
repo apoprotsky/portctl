@@ -26,8 +26,8 @@ fn stacks_vars_update(command cli.Command, client api.Service, parser template.S
 	if value != val {
 		request := api.StackUpdateRequest{
 			stack_file_content: client.get_stack_file(stack.id)!
-			env: stack.env.update_variable(variable, value)
-			prune: false
+			env:                stack.env.update_variable(variable, value)
+			prune:              false
 		}
 		eprint('Stack ${name} found in endpoint ${endpoint}, updating variable ${variable} ... ')
 		client.update_stack(endpoint_id, stack.id, request)!
@@ -43,17 +43,17 @@ fn stacks_vars_update_command() cli.Command {
 	flags << get_stacks_name_flag()
 	flags << get_stacks_variable_flag()
 	flags << cli.Flag{
-		flag: .string
-		name: 'value'
-		abbrev: 'val'
+		flag:        .string
+		name:        'value'
+		abbrev:      'val'
 		description: 'Variable value'
-		required: true
+		required:    true
 	}
 	flags << get_stacks_skip_no_stack_flag()
 	return cli.Command{
-		name: 'update'
+		name:        'update'
 		description: 'Update value of the stack variable'
-		execute: command_l3
-		flags: flags
+		execute:     command_l3
+		flags:       flags
 	}
 }

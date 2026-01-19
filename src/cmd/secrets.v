@@ -8,10 +8,10 @@ fn secrets(command cli.Command) ! {
 
 fn secrets_command() cli.Command {
 	return cli.Command{
-		name: 'secrets'
+		name:        'secrets'
 		description: 'Secrets management'
-		execute: secrets
-		commands: [
+		execute:     secrets
+		commands:    [
 			secrets_apply_command(),
 			secrets_create_command(),
 			secrets_delete_command(),
@@ -23,11 +23,11 @@ fn secrets_command() cli.Command {
 fn get_secrets_name_flag() []cli.Flag {
 	return [
 		cli.Flag{
-			flag: .string
-			name: 'name'
-			abbrev: 'n'
+			flag:        .string
+			name:        'name'
+			abbrev:      'n'
 			description: 'Secret name'
-			required: true
+			required:    true
 		},
 	]
 }
@@ -35,11 +35,11 @@ fn get_secrets_name_flag() []cli.Flag {
 fn get_secrets_flags() []cli.Flag {
 	mut flags := get_secrets_name_flag()
 	flags << cli.Flag{
-		flag: .string
-		name: 'file'
-		abbrev: 'f'
+		flag:        .string
+		name:        'file'
+		abbrev:      'f'
 		description: 'Secret template file'
-		required: true
+		required:    true
 	}
 	return flags
 }

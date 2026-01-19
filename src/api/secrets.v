@@ -5,9 +5,9 @@ import net.http
 
 pub struct SecretPostRequest {
 pub:
-	name   string            [json: Name]
-	labels map[string]string [json: Labels]
-	data   string            [json: Data]
+	name   string            @[json: Name]
+	labels map[string]string @[json: Labels]
+	data   string            @[json: Data]
 }
 
 // get_secrets returns array of Secret

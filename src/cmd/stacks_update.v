@@ -21,7 +21,7 @@ fn stacks_update(command cli.Command, client api.Service, parser template.Servic
 	mut env := []entities.StackVariable{}
 	for key in keys {
 		env << entities.StackVariable{
-			name: key
+			name:  key
 			value: variables[key]
 		}
 	}
@@ -31,8 +31,8 @@ fn stacks_update(command cli.Command, client api.Service, parser template.Servic
 	}
 	request := api.StackUpdateRequest{
 		stack_file_content: content
-		env: env
-		prune: prune
+		env:                env
+		prune:              prune
 	}
 	eprint('Stack ${name} found in endpoint ${endpoint}, updating ... ')
 	client.update_stack(endpoint_id, stack.id, request)!
@@ -45,16 +45,16 @@ fn stacks_update_command() cli.Command {
 	flags << get_vault_flags()
 	flags << get_stacks_flags()
 	flags << cli.Flag{
-		flag: .bool
-		name: 'prune'
-		abbrev: 'p'
-		description: 'Prune stack services'
+		flag:          .bool
+		name:          'prune'
+		abbrev:        'p'
+		description:   'Prune stack services'
 		default_value: ['true']
 	}
 	return cli.Command{
-		name: 'update'
+		name:        'update'
 		description: 'Update stack'
-		execute: command
-		flags: flags
+		execute:     command
+		flags:       flags
 	}
 }

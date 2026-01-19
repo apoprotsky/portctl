@@ -13,7 +13,7 @@ pub fn (se []StackVariable) update_variable(name string, value string) StackEnvi
 	func := fn [name, value] (item StackVariable) StackVariable {
 		if item.name == name {
 			return StackVariable{
-				name: name
+				name:  name
 				value: value
 			}
 		}
@@ -24,11 +24,11 @@ pub fn (se []StackVariable) update_variable(name string, value string) StackEnvi
 
 pub struct Stack {
 pub:
-	id          u32             [json: Id]
-	endpoint_id u32             [json: EndpointId]
-	name        string          [json: Name]
-	swarm_id    string          [json: SwarmId]
-	env         []StackVariable [json: Env]
+	id          u32             @[json: Id]
+	endpoint_id u32             @[json: EndpointId]
+	name        string          @[json: Name]
+	swarm_id    string          @[json: SwarmId]
+	env         []StackVariable @[json: Env]
 }
 
 // get_variable_value returns value of Stack envinment by name
@@ -43,5 +43,5 @@ pub fn (s Stack) get_variable_value(name string) string {
 
 pub struct StackFile {
 pub:
-	content string [json: StackFileContent]
+	content string @[json: StackFileContent]
 }

@@ -21,16 +21,16 @@ fn stacks_apply_command() cli.Command {
 	flags << get_vault_flags()
 	flags << get_stacks_flags()
 	flags << cli.Flag{
-		flag: .bool
-		name: 'prune'
-		abbrev: 'p'
-		description: 'Prune stack services'
+		flag:          .bool
+		name:          'prune'
+		abbrev:        'p'
+		description:   'Prune stack services'
 		default_value: ['true']
 	}
 	return cli.Command{
-		name: 'apply'
+		name:        'apply'
 		description: 'Create or upate stack'
-		execute: command
-		flags: flags
+		execute:     command
+		flags:       flags
 	}
 }

@@ -22,16 +22,16 @@ fn stacks_create(command cli.Command, client api.Service, parser template.Servic
 	mut env := []entities.StackVariable{}
 	for key in keys {
 		env << entities.StackVariable{
-			name: key
+			name:  key
 			value: variables[key]
 		}
 	}
 	client.get_stack(endpoint_id, name) or {
 		request := api.StackCreateRequest{
-			name: name
-			swarm_id: swarm_id
+			name:               name
+			swarm_id:           swarm_id
 			stack_file_content: content
-			env: env
+			env:                env
 		}
 		eprint('Stack ${name} not found in endpoint ${endpoint}, creating ... ')
 		client.create_stack(endpoint_id, request)!
@@ -47,9 +47,9 @@ fn stacks_create_command() cli.Command {
 	flags << get_vault_flags()
 	flags << get_stacks_flags()
 	return cli.Command{
-		name: 'create'
+		name:        'create'
 		description: 'Create stack'
-		execute: command
-		flags: flags
+		execute:     command
+		flags:       flags
 	}
 }

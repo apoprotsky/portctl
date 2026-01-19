@@ -8,10 +8,10 @@ fn services(command cli.Command) ! {
 
 fn services_command() cli.Command {
 	return cli.Command{
-		name: 'services'
+		name:        'services'
 		description: 'Services management'
-		execute: services
-		commands: [
+		execute:     services
+		commands:    [
 			services_list_command(),
 		]
 	}

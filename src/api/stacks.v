@@ -6,15 +6,15 @@ import entities
 pub struct StackCreateRequest {
 pub:
 	name               string
-	swarm_id           string                   [json: swarmID]
-	stack_file_content string                   [json: stackFileContent]
-	env                []entities.StackVariable [json: env]
+	swarm_id           string                   @[json: swarmID]
+	stack_file_content string                   @[json: stackFileContent]
+	env                []entities.StackVariable @[json: env]
 }
 
 pub struct StackUpdateRequest {
 pub:
-	stack_file_content string                   [json: stackFileContent]
-	env                []entities.StackVariable [json: env]
+	stack_file_content string                   @[json: stackFileContent]
+	env                []entities.StackVariable @[json: env]
 	prune              bool
 }
 

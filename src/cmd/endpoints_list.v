@@ -15,9 +15,9 @@ fn endpoints_list(command cli.Command, client api.Service, parser template.Servi
 fn endpoints_list_command() cli.Command {
 	flags := get_common_flags()
 	return cli.Command{
-		name: 'list'
+		name:        'list'
 		description: 'List endpoints'
-		execute: command
-		flags: flags
+		execute:     command
+		flags:       flags
 	}
 }

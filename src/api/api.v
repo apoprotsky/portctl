@@ -21,22 +21,22 @@ pub fn new(flags []cli.Flag) Service {
 	retries := flags.get_int('retries') or { panic(err) }
 	token := flags.get_string('token') or { panic(err) }
 	return Service{
-		api: api + '/api'
+		api:     api + '/api'
 		retries: retries
-		token: token
+		token:   token
 	}
 }
 
-// call[I, O] sends request to Portainer API endpoint
+// call sends request to Portainer API endpoint
 pub fn (s Service) call[I, O](endpoint string, method http.Method, request I) !O {
 	mut header := http.new_header()
 	header.add(http.CommonHeader.content_type, 'application/json')
 	header.add_custom('X-API-Key', s.token)!
 	config := http.FetchConfig{
-		url: '${s.api}/${endpoint}'
+		url:    '${s.api}/${endpoint}'
 		method: method
 		header: header
-		data: json.encode(request)
+		data:   json.encode(request)
 	}
 	status_ok := http.Status.ok.int()
 	status_no_content := http.Status.no_content.int()

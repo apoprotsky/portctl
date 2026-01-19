@@ -15,9 +15,9 @@ fn stacks_list(command cli.Command, client api.Service, parser template.Service)
 fn stacks_list_command() cli.Command {
 	mut flags := get_common_flags()
 	return cli.Command{
-		name: 'list'
+		name:        'list'
 		description: 'List stacks'
-		execute: command
-		flags: flags
+		execute:     command
+		flags:       flags
 	}
 }

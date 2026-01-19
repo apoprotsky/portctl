@@ -16,11 +16,11 @@ fn configs_apply(command cli.Command, client api.Service, parser template.Servic
 	name := name_flag + api.get_postfix(data)
 	config := client.get_config(endpoint_id, name) or {
 		request := api.ConfigPostRequest{
-			name: name
+			name:   name
 			labels: {
 				label_name: name_flag
 			}
-			data: data
+			data:   data
 		}
 		eprint('Config ${name} not found, creating ... ')
 		client.create_config(endpoint_id, request)!
@@ -62,9 +62,9 @@ fn configs_apply_command() cli.Command {
 	flags << get_vault_flags()
 	flags << get_configs_flags()
 	return cli.Command{
-		name: 'apply'
+		name:        'apply'
 		description: 'Create config'
-		execute: command
-		flags: flags
+		execute:     command
+		flags:       flags
 	}
 }

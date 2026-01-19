@@ -22,9 +22,9 @@ fn secrets_delete_command() cli.Command {
 	flags << get_endpoint_flag()
 	flags << get_secrets_name_flag()
 	return cli.Command{
-		name: 'delete'
+		name:        'delete'
 		description: 'Delete secret'
-		execute: command
-		flags: flags
+		execute:     command
+		flags:       flags
 	}
 }

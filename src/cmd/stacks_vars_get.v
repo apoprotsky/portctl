@@ -32,9 +32,9 @@ fn stacks_vars_get_command() cli.Command {
 	flags << get_stacks_variable_flag()
 	flags << get_stacks_skip_no_stack_flag()
 	return cli.Command{
-		name: 'get'
+		name:        'get'
 		description: 'Get value of the stack variable'
-		execute: command_l3
-		flags: flags
+		execute:     command_l3
+		flags:       flags
 	}
 }

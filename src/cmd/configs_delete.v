@@ -22,9 +22,9 @@ fn configs_delete_command() cli.Command {
 	flags << get_endpoint_flag()
 	flags << get_configs_name_flag()
 	return cli.Command{
-		name: 'delete'
+		name:        'delete'
 		description: 'Delete config'
-		execute: command
-		flags: flags
+		execute:     command
+		flags:       flags
 	}
 }

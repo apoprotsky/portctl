@@ -6,12 +6,12 @@ import api
 import template
 
 struct SecretSpec {
-	name string [json: Name]
+	name string @[json: Name]
 }
 
 pub struct Secret {
-	id   string     [json: ID]
-	spec SecretSpec [json: Spec]
+	id   string     @[json: ID]
+	spec SecretSpec @[json: Spec]
 }
 
 fn secrets_list(command cli.Command, client api.Service, parser template.Service) ! {
@@ -32,9 +32,9 @@ fn secrets_list_command() cli.Command {
 	mut flags := get_common_flags()
 	flags << get_endpoint_flag()
 	return cli.Command{
-		name: 'list'
+		name:        'list'
 		description: 'List secrets'
-		execute: command
-		flags: flags
+		execute:     command
+		flags:       flags
 	}
 }

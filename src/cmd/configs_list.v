@@ -18,9 +18,9 @@ fn configs_list_command() cli.Command {
 	mut flags := get_common_flags()
 	flags << get_endpoint_flag()
 	return cli.Command{
-		name: 'list'
+		name:        'list'
 		description: 'List configs'
-		execute: command
-		flags: flags
+		execute:     command
+		flags:       flags
 	}
 }

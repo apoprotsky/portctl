@@ -28,7 +28,7 @@ fn (s Service) get_vault_variable(name string) string {
 		exit(1)
 	}
 	config := http.FetchConfig{
-		url: url
+		url:    url
 		method: http.Method.get
 		header: header
 	}
