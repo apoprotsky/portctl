@@ -26,6 +26,7 @@ pub fn get_commands() []cli.Command {
 		secrets_command(),
 		services_command(),
 		stacks_command(),
+		templates_command(),
 	]
 }
 
@@ -33,21 +34,22 @@ fn command(command cli.Command) ! {
 	client := api.new(command.flags)
 	parser := template.new(command.flags)
 	commands := {
-		'configs apply':  configs_apply
-		'configs create': configs_create
-		'configs delete': configs_delete
-		'configs list':   configs_list
-		'endpoints list': endpoints_list
-		'secrets apply':  secrets_apply
-		'secrets create': secrets_create
-		'secrets delete': secrets_delete
-		'secrets list':   secrets_list
-		'services list':  services_list
-		'stacks apply':   stacks_apply
-		'stacks create':  stacks_create
-		'stacks delete':  stacks_delete
-		'stacks list':    stacks_list
-		'stacks update':  stacks_update
+		'configs apply':    configs_apply
+		'configs create':   configs_create
+		'configs delete':   configs_delete
+		'configs list':     configs_list
+		'endpoints list':   endpoints_list
+		'secrets apply':    secrets_apply
+		'secrets create':   secrets_create
+		'secrets delete':   secrets_delete
+		'secrets list':     secrets_list
+		'services list':    services_list
+		'stacks apply':     stacks_apply
+		'stacks create':    stacks_create
+		'stacks delete':    stacks_delete
+		'stacks list':      stacks_list
+		'stacks update':    stacks_update
+		'templates render': templates_render
 	}
 	func := commands['${command.parent.name} ${command.name}']
 	func(command, client, parser)!
