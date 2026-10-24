@@ -13,7 +13,7 @@ fn test_get_replicas() {
 
 fn test_get_spec_with_replicas_changes_only_replicas() {
 	service := json.decode(ServiceInspect, service_json)!
-	spec := service.get_spec_with_replicas(3)!
+	spec := service.get_spec_with_replicas(3, false)!
 	assert spec == service.spec.replace('"Replicas":0', '"Replicas":3')
 	assert spec.contains('"NanoCPUs":1500000000')
 	assert spec.contains('"Delay":5000000000')
@@ -23,7 +23,7 @@ fn test_get_spec_with_replicas_changes_only_replicas() {
 fn test_replicated_without_replicas() {
 	service := json.decode(ServiceInspect, '{"ID":"abc","Version":{"Index":1},"Spec":{"Name":"x","Mode":{"Replicated":{}}}}')!
 	assert service.get_replicas()! == 0
-	assert service.get_spec_with_replicas(2)! == '{"Name":"x","Mode":{"Replicated":{"Replicas":2}}}'
+	assert service.get_spec_with_replicas(2, false)! == '{"Name":"x","Mode":{"Replicated":{"Replicas":2}}}'
 }
 
 fn test_global_mode_fails() {
@@ -38,4 +38,16 @@ fn test_global_mode_fails() {
 fn test_update_response_without_warnings() {
 	response := json.decode(ServiceUpdateResponse, '{"Warnings":null}')!
 	assert response.warnings.len == 0
+}
+
+fn test_force_increments_force_update() {
+	service := json.decode(ServiceInspect, '{"ID":"abc","Version":{"Index":1},"Spec":{"Name":"x","TaskTemplate":{"ContainerSpec":{"Image":"app"},"ForceUpdate":7},"Mode":{"Replicated":{"Replicas":1}}}}')!
+	assert service.get_spec_with_replicas(1, true)! == '{"Name":"x","TaskTemplate":{"ContainerSpec":{"Image":"app"},"ForceUpdate":8},"Mode":{"Replicated":{"Replicas":1}}}'
+}
+
+fn test_force_adds_force_update() {
+	service := json.decode(ServiceInspect, service_json)!
+	spec := service.get_spec_with_replicas(1, true)!
+	assert spec == service.spec.replace('"Replicas":0', '"Replicas":1').replace('"TaskTemplate":{',
+		'"TaskTemplate":{"ForceUpdate":1,')
 }

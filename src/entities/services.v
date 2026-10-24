@@ -37,8 +37,13 @@ pub:
 	index u64 @[json: Index]
 }
 
-struct ServiceSpecMode {
-	mode string @[json: Mode; raw]
+struct ServiceSpecRaw {
+	mode          string @[json: Mode; raw]
+	task_template string @[json: TaskTemplate; raw]
+}
+
+struct ServiceTaskTemplateForceUpdate {
+	force_update u64 @[json: ForceUpdate]
 }
 
 struct ServiceMode {
@@ -55,7 +60,7 @@ pub:
 }
 
 fn (s ServiceInspect) get_mode() !(string, string) {
-	spec := json.decode(ServiceSpecMode, s.spec)!
+	spec := json.decode(ServiceSpecRaw, s.spec)!
 	mode := json.decode(ServiceMode, spec.mode)!
 	if mode.replicated == '' {
 		return error('service is not in replicated mode: ${spec.mode}')
@@ -69,12 +74,30 @@ pub fn (s ServiceInspect) get_replicas() !u64 {
 	return json.decode(ServiceModeReplicated, replicated)!.replicas
 }
 
-// get_spec_with_replicas returns raw spec with replaced number of replicas
-pub fn (s ServiceInspect) get_spec_with_replicas(replicas u64) !string {
+// get_spec_with_replicas returns raw spec with replaced number of replicas,
+// with force it also increments TaskTemplate.ForceUpdate to recreate tasks
+pub fn (s ServiceInspect) get_spec_with_replicas(replicas u64, force bool) !string {
 	mode, _ := s.get_mode()!
-	old := '"Mode":${mode}'
-	if !s.spec.contains(old) {
-		return error('cannot find service mode in spec')
+	mut spec := replace_raw_value(s.spec, 'Mode', mode, '{"Replicated":{"Replicas":${replicas}}}')!
+	if force {
+		task := json.decode(ServiceSpecRaw, s.spec)!.task_template
+		count := json.decode(ServiceTaskTemplateForceUpdate, task)!.force_update
+		new_task := if task.contains('"ForceUpdate":') {
+			task.replace_once('"ForceUpdate":${count}', '"ForceUpdate":${count + 1}')
+		} else if task == '{}' {
+			'{"ForceUpdate":1}'
+		} else {
+			'{"ForceUpdate":1,' + task[1..]
+		}
+		spec = replace_raw_value(spec, 'TaskTemplate', task, new_task)!
 	}
-	return s.spec.replace_once(old, '"Mode":{"Replicated":{"Replicas":${replicas}}}')
+	return spec
+}
+
+fn replace_raw_value(spec string, key string, old string, new string) !string {
+	old_pair := '"${key}":${old}'
+	if !spec.contains(old_pair) {
+		return error('cannot find ${key} in service spec')
+	}
+	return spec.replace_once(old_pair, '"${key}":${new}')
 }

@@ -13,14 +13,16 @@ fn services_scale(command cli.Command, client api.Service, parser template.Servi
 		return error('number of replicas cannot be negative')
 	}
 	replicas := u64(replicas_flag)
+	force := command.flags.get_bool('force')!
 	service := client.get_service(endpoint_id, name)!
 	current := service.get_replicas() or { return error('${err.msg()}, service ${name}') }
-	if current == replicas {
+	if current == replicas && !force {
 		eprintln('Service ${name} already has ${replicas} replicas ... SKIP')
 		return
 	}
-	spec := service.get_spec_with_replicas(replicas)!
-	eprint('Service ${name} scaling from ${current} to ${replicas} replicas ... ')
+	spec := service.get_spec_with_replicas(replicas, force)!
+	forced := if force { ' with force' } else { '' }
+	eprint('Service ${name} scaling from ${current} to ${replicas} replicas${forced} ... ')
 	response := client.update_service(endpoint_id, service.id, service.version.index,
 		spec)!
 	eprintln('OK')
@@ -44,6 +46,11 @@ fn services_scale_command() cli.Command {
 		name:        'replicas'
 		description: 'Number of replicas'
 		required:    true
+	}
+	flags << cli.Flag{
+		flag:        .bool
+		name:        'force'
+		description: 'Recreate tasks even if number of replicas is not changed'
 	}
 	return cli.Command{
 		name:        'scale'

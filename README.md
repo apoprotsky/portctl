@@ -103,6 +103,7 @@ Scale:
   ```sh
   portctl services scale --name rabbitmq_server --replicas 1
   ```
+  use `--force` to run tasks again even if the number of replicas is not changed (like `docker service update --force`)
 
 Delete:
 - `Portainer` stacks for `Docker Swarm`
