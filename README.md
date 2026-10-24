@@ -98,6 +98,13 @@ Create:
 Update:
 - `Portainer` stacks for `Docker Swarm`
 
+Scale:
+- `Docker Swarm` replicated services, e.g. run a one-off service declared with `replicas: 0`
+  ```sh
+  portctl services scale --name rabbitmq_server --replicas 1
+  ```
+  use `--force` to run tasks again even if the number of replicas is not changed (like `docker service update --force`)
+
 Delete:
 - `Portainer` stacks for `Docker Swarm`
 - `Docker Swarm` configs, secrets
