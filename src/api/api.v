@@ -29,6 +29,11 @@ pub fn new(flags []cli.Flag) Service {
 
 // call sends request to Portainer API endpoint
 pub fn (s Service) call[I, O](endpoint string, method http.Method, request I) !O {
+	return s.call_raw[O](endpoint, method, json.encode(request))
+}
+
+// call_raw sends request with already encoded JSON body to Portainer API endpoint
+pub fn (s Service) call_raw[O](endpoint string, method http.Method, data string) !O {
 	mut header := http.new_header()
 	header.add(http.CommonHeader.content_type, 'application/json')
 	header.add_custom('X-API-Key', s.token)!
@@ -36,7 +41,7 @@ pub fn (s Service) call[I, O](endpoint string, method http.Method, request I) !O
 		url:    '${s.api}/${endpoint}'
 		method: method
 		header: header
-		data:   json.encode(request)
+		data:   data
 	}
 	status_ok := http.Status.ok.int()
 	status_no_content := http.Status.no_content.int()

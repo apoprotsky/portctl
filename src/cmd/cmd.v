@@ -44,6 +44,7 @@ fn command(command cli.Command) ! {
 		'secrets delete':   secrets_delete
 		'secrets list':     secrets_list
 		'services list':    services_list
+		'services scale':   services_scale
 		'stacks apply':     stacks_apply
 		'stacks create':    stacks_create
 		'stacks delete':    stacks_delete

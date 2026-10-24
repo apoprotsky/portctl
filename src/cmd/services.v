@@ -13,6 +13,7 @@ fn services_command() cli.Command {
 		execute:     services
 		commands:    [
 			services_list_command(),
+			services_scale_command(),
 		]
 	}
 }
