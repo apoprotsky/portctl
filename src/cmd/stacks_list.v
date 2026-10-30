@@ -8,7 +8,7 @@ fn stacks_list(command cli.Command, client api.Service, parser template.Service)
 	_ = command
 	_ = parser
 	response := client.get_stacks()!
-	println('${'ID':-5}${'ENDPOINT_ID':-12}${'SWARM_ID':-27}${'NAME'}')
+	println('${'ID':-5}${'ENDPOINT_ID':-12}${'SWARM_ID':-27}NAME')
 	for item in response {
 		println('${item.id:-5}${item.endpoint_id:-12}${item.swarm_id:-27}${item.name}')
 	}

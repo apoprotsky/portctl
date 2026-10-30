@@ -9,7 +9,7 @@ fn services_list(command cli.Command, client api.Service, parser template.Servic
 	endpoint := command.flags.get_string('endpoint')!
 	endpoint_id := client.get_endpoint_id_by_name(endpoint)!
 	response := client.get_services(endpoint_id)!
-	println('${'ID':-25}  ${'NAME':-40}  ${'IMAGE'}')
+	println('${'ID':-25}  ${'NAME':-40}  IMAGE')
 	for item in response {
 		image := item.spec.task_template.spec.image.split('@')[0]
 		println('${item.id:-25}  ${item.spec.name:-40}  ${image}')

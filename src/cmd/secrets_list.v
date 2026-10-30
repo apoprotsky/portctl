@@ -23,7 +23,7 @@ fn secrets_list(command cli.Command, client api.Service, parser template.Service
 		eprintln(err.msg())
 		exit(1)
 	}
-	println('${'ID':-30}${'NAME'}')
+	println('${'ID':-30}NAME')
 	for item in response {
 		println('${item.id:-30}${item.spec.name}')
 	}
