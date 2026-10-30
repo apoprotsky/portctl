@@ -1,7 +1,7 @@
 module template
 
 import net.http
-import json
+import json2
 
 struct VaultKVData {
 	data map[string]string
@@ -38,7 +38,7 @@ fn (s Service) get_vault_variable(name string) string {
 	}
 	status := http.Status.ok
 	if status.int() == result.status_code {
-		response := json.decode(VaultKVResponse, result.body) or {
+		response := json2.decode[VaultKVResponse](result.body) or {
 			eprintln(err.msg())
 			exit(1)
 		}

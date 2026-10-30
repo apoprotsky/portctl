@@ -33,11 +33,11 @@ watch:
 
 dev:
 	@[ -d dist ] || mkdir dist
-	@v -skip-unused -o dist/portctl . && echo 'Build OK'
+	@cd src; v -o ../dist/portctl . && echo 'Build OK'
 
 prod:
 	@[ -d dist ] || mkdir dist
-	@v -prod -skip-unused -o dist/portctl . && echo 'Build OK'
+	@cd src; v -prod -o dist/portctl . && echo 'Build OK'
 
 clean:
 	@[ -f dist/portctl ] && rm dist/portctl

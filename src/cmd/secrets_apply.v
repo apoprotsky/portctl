@@ -35,11 +35,11 @@ fn secrets_apply(command cli.Command, client api.Service, parser template.Servic
 }
 
 fn secrets_apply_clean(client api.Service, endpoint_id u32, name string, exclude []string) ! {
-	secrets := client.get_secrets_staled(endpoint_id, label_name, name, exclude)!
-	if secrets.len == 0 {
+	secrets_staled := client.get_secrets_staled(endpoint_id, label_name, name, exclude)!
+	if secrets_staled.len == 0 {
 		return
 	}
-	for secret in secrets {
+	for secret in secrets_staled {
 		eprint('Delete old secret ${secret.spec.name} ... ')
 		mut result := 'OK'
 		client.delete_secret(endpoint_id, secret.id) or {

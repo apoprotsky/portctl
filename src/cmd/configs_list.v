@@ -5,6 +5,7 @@ import api
 import template
 
 fn configs_list(command cli.Command, client api.Service, parser template.Service) ! {
+	_ = parser
 	endpoint := command.flags.get_string('endpoint')!
 	endpoint_id := client.get_endpoint_id_by_name(endpoint)!
 	response := client.get_configs(endpoint_id)!

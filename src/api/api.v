@@ -3,7 +3,7 @@ module api
 import cli
 import crypto.md5
 import encoding.base58
-import json
+import json2
 import net.http
 import time
 
@@ -17,11 +17,11 @@ pub struct Service {
 
 // new returns instance of Portainer API service
 pub fn new(flags []cli.Flag) Service {
-	api := flags.get_string('api') or { panic(err) }
+	api_url := flags.get_string('api') or { panic(err) }
 	retries := flags.get_int('retries') or { panic(err) }
 	token := flags.get_string('token') or { panic(err) }
 	return Service{
-		api:     api + '/api'
+		api:     api_url + '/api'
 		retries: retries
 		token:   token
 	}
@@ -36,7 +36,7 @@ pub fn (s Service) call[I, O](endpoint string, method http.Method, request I) !O
 		url:    '${s.api}/${endpoint}'
 		method: method
 		header: header
-		data:   json.encode(request)
+		data:   json2.encode(request, escape_unicode: true, time_as_unix: true)
 	}
 	status_ok := http.Status.ok.int()
 	status_no_content := http.Status.no_content.int()
@@ -63,7 +63,7 @@ pub fn (s Service) call[I, O](endpoint string, method http.Method, request I) !O
 		}
 		match result.status_code {
 			status_ok {
-				response := json.decode(O, result.body) or {
+				response := json2.decode[O](result.body) or {
 					return error('Error in API call ${method} ${s.api}/${endpoint}: cannot decode result: ${err.msg()}')
 				}
 				return response

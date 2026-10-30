@@ -11,6 +11,7 @@ fn (s Service) parse(data string) !string {
 }
 
 fn (s Service) parse_variables(re regex.RE, data string, start int, end int) string {
+	_ = re
 	parts := data[start + 2..end - 2].split(':')
 	source := parts[0].trim_space()
 	name := parts[1].trim_space()

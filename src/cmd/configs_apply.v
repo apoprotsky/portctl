@@ -38,11 +38,11 @@ fn configs_apply(command cli.Command, client api.Service, parser template.Servic
 }
 
 fn configs_apply_clean(client api.Service, endpoint_id u32, name string, exclude []string) ! {
-	configs := client.get_configs_staled(endpoint_id, label_name, name, exclude)!
-	if configs.len == 0 {
+	configs_staled := client.get_configs_staled(endpoint_id, label_name, name, exclude)!
+	if configs_staled.len == 0 {
 		return
 	}
-	for config in configs {
+	for config in configs_staled {
 		eprint('Delete old config ${config.spec.name} ... ')
 		mut result := 'OK'
 		client.delete_config(endpoint_id, config.id) or {

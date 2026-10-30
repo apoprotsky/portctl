@@ -5,6 +5,8 @@ import api
 import template
 
 fn templates_render(command cli.Command, client api.Service, parser template.Service) ! {
+	_ = parser
+	_ = client
 	file := command.flags.get_string('file')!
 	result := parser.parse_file(file)!
 	println(result)

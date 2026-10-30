@@ -16,8 +16,6 @@ const env_vault_addr = 'VAULT_ADDR'
 const env_vault_token = 'VAULT_TOKEN'
 const label_name = 'portctl.name'
 
-type Command = fn (cli.Command, api.Service, template.Service) !
-
 // get_commands returns array of available commands
 pub fn get_commands() []cli.Command {
 	return [

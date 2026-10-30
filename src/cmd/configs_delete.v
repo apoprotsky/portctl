@@ -5,6 +5,7 @@ import api
 import template
 
 fn configs_delete(command cli.Command, client api.Service, parser template.Service) ! {
+	_ = parser
 	endpoint := command.flags.get_string('endpoint')!
 	endpoint_id := client.get_endpoint_id_by_name(endpoint)!
 	name := command.flags.get_string('name')!

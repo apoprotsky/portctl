@@ -15,6 +15,7 @@ pub struct Secret {
 }
 
 fn secrets_list(command cli.Command, client api.Service, parser template.Service) ! {
+	_ = parser
 	endpoint := command.flags.get_string('endpoint')!
 	endpoint_id := client.get_endpoint_id_by_name(endpoint)!
 	response := client.call[api.Empty, []Secret]('endpoints/${endpoint_id}/docker/secrets',

@@ -5,6 +5,8 @@ import api
 import template
 
 fn endpoints_list(command cli.Command, client api.Service, parser template.Service) ! {
+	_ = command
+	_ = parser
 	response := client.get_endpoints()!
 	println('${'ID':-5}${'NAME':-15}${'URL':-20}')
 	for endpoint in response {
