@@ -16,28 +16,32 @@ help:
 all: fmt vet prod
 
 fmt:
-	@v fmt -diff .
-	@v fmt -w .
+	@cd src; v fmt -l .
+	@cd src; v fmt -diff .
+	@cd src; v fmt -w .
 
 vet:
-	@v vet -W .
+	@cd src; v vet -W .
 
 watch:
 	@[ -d dist ] || mkdir dist
-	@fswatch -o -r src | xargs -n 1 -I {} sh -c \
+	@cd src; \
+	fswatch -o -r src | xargs -n 1 -I {} sh -c \
 	  'date +"%Y-%m-%d %H:%M:%S Build started" && \
-	   v -skip-unused -o dist/portctl . && \
+	   v -o ../dist/portctl . && \
 	   date +"%Y-%m-%d %H:%M:%S Build OK" || \
 	   date +"%Y-%m-%d %H:%M:%S Build failed" && \
 	   echo ----------------------------------------'
 
 dev:
 	@[ -d dist ] || mkdir dist
-	@cd src; v -o ../dist/portctl . && echo 'Build OK'
+	@cd src; \
+	v -o ../dist/portctl . && echo 'Build OK'
 
 prod:
 	@[ -d dist ] || mkdir dist
-	@cd src; v -prod -o dist/portctl . && echo 'Build OK'
+	@cd src; \
+	v -prod -o dist/portctl . && echo 'Build OK'
 
 clean:
 	@[ -f dist/portctl ] && rm dist/portctl
